@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url('src/assets/img/sign-in-img.png');
+            background-size: cover; /* Это для установки размера фона по размеру экрана */
+            background-repeat: no-repeat; /* Это для предотвращения повторения фона */
+            background-position: center; /* Это для центрирования фона */
+            margin: 0; /* Это убирает внешний отступ у body */
+            font-family: 'Montserrat', sans-serif;
+            
+         
+        }
+
+        .login-form {
+            
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+            text-align: center;
+            color: rgb(244, 242, 255);
+            
+            font-size: 45px;
+       
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: white;
+            font-size: 20px;
+
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border-radius: 10px;
+            width: 300px; /* Ширина поля ввода */
+    height: 65px; /* Высота поля ввода */
+        }
+
+        .form-group.checkbox {
+            text-align: left;
+        }
+
+        .form-group.checkbox input {
+            width: auto;
+        }
+
+        .form-group button {
+            background-color: rgb(93, 95, 239);
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+    </style>
+    <title>Login Form</title>
+</head>
+<body>
+    <div class="login-form">
+        <h1>Авторизация</h1>
+        <form action="">
+            <div class="form-group">
+                <label for="username">Login:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group checkbox">
+                <input type="checkbox" id="remember" name="remember">
+                <label for="remember">Запомнить меня</label>
+            </div>
+            <div class="form-group">
+                <button type="submit">Login</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

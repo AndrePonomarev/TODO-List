@@ -8,25 +8,61 @@
 </head>
 <body>
   <header class="header">
-    <h1 class="header__title">Kanban Board</h1>
+    <input class="header__title" value="Kanban Board"></input>
+    <button class="header__plus">+ </button>
   </header>
   
   <main class="kanban container">
     <section class="kanban__column kanban__column--to-do">
-      <h2 class="kanban__title">Задачи</h2>
+      <div class="kanban__title-main">
+      <h2 class="kanban__title"> <img src="./src/assets/img/task1.png" style="width: 20px;">  Задачи</h2>
+      <button class="kanban__plus">+</button>
+    </div>
       <div class="kanban__list">
         <div class="task-item">
-          <h3 class="task-item_title">Задача 1</h3>
+          <h3 class="task-item_title">Задача 2</h3>
+            <input class="task-item_description" value="Описание задачи 2"></input>
+              <div class="task-icon"><img src="./src/assets/img/yellow.png" style="width: 90px;"></div>
         </div>
       </div>
     </section>
     
     <section class="kanban__column kanban__column--in-progress">
-      <h2 class="kanban__title">В процессе</h2>
+      <div class="kanban__title-main">
+        <h2 class="kanban__title"> <img src="./src/assets/img/task2.png" style="width: 20px;">  В процессе</h2>
+        <button class="kanban__plus">+</button>
+      </div>
+        <div class="kanban__list">
+          <div class="task-item">
+            <h3 class="task-item_title">Задача 9</h3>
+              <input class="task-item_description" value="Описание задачи 9"></input>
+                <div class="task-icon"><img src="./src/assets/img/green.png" style="width: 90px;"></div>
+          </div>
+        </div>
+
+        
+        </div>
+          <div class="kanban__list">
+            <div class="task-item">
+              <h3 class="task-item_title">Задача 5</h3>
+                <input class="task-item_description" value="Описание задачи 5"></input>
+                  <div class="task-icon"><img src="./src/assets/img/red.png" style="width: 90px;"></div>
+            </div>
+          </div>
     </section>
     
     <section class="kanban__column kanban__column--done">
-      <h2 class="kanban__title">Выполнено</h2>
+      <div class="kanban__title-main">
+        <h2 class="kanban__title"> <img src="./src/assets/img/task3.png" style="width: 20px;">  Выполнено</h2>
+        <button class="kanban__plus">+</button>
+      </div>
+        <div class="kanban__list">
+          <div class="task-item">
+            <h3 class="task-item_title">Задача 10</h3>
+              <input class="task-item_description" value="Описание задачи 10"></input>
+                <div class="task-icon"><img src="./src/assets/img/purple.png" style="width: 90px;"></div>
+          </div>
+        </div>
     </section>
   </main>
   
