@@ -9,7 +9,7 @@
 .kanban__column {
     flex: 0 0 100%;
     background-color: gray;
-    border-radius: 6px;
+    border-radius: 8px;
     padding: 10px;
     margin: 0 10px 20px;
 }
@@ -19,4 +19,5 @@
     margin-bottom: 10px;
     color: rgb(73, 32, 120);
     margin: 0;
+    font-size: 15px;
 }

@@ -16,8 +16,6 @@
             background-position: center; /* Это для центрирования фона */
             margin: 0; /* Это убирает внешний отступ у body */
             font-family: 'Montserrat', sans-serif;
-            
-         
         }
 
         .login-form {
@@ -26,14 +24,10 @@
             border-radius: 8px;
             text-align: center;
             color: rgb(244, 242, 255);
-
-
             width: 315px;
             height: 330px;
             top: 205px;
             left: 482px;
-
-       
         }
 
         .form-group {
@@ -45,35 +39,28 @@
             display: block;
             margin-bottom: 5px;
             color: white;
-            font-size: 20px;
+            font-size: 14px;
+            padding: 0px 0px 0px 10px;
 
         }
 
-        .form-group input {
+
+        .form-group-input {
             width: 100%;
             padding: 8px;
             box-sizing: border-box;
             border-radius: 10px;
             width: 300px; /* Ширина поля ввода */
-            height: 65px; /* Высота поля ввода */
+            height: 45px; /* Высота поля ввода */
             background: rgba(213, 204, 255, 1);
 
         }
 
         .form-group.checkbox {
-            text-align: left;
-            width: 155px;
-            height: 17px;
-            top: 449px;
-            left: 493px;
+            width: 100%;
             border-radius: 5px;
             display: flex; /* Используем flex для размещения элементов в одной строке */
             align-items: center; /* Выравниваем элементы по центру вертикально */
-
-        }
-
-        .form-group.checkbox input {
-            width: auto;
         }
 
         .form-group button {
@@ -86,6 +73,35 @@
             width: 100%;
         }
 
+        input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;  
+            
+        }
+
+        
+
+        input[type="checkbox"]::before {
+            content: "";
+            display: inline-block;
+            width: 16px; /* Размер вашего кастомного чекбокса */
+            height: 16px; /* Размер вашего кастомного чекбокса */
+            background-color: #fff; /* Цвет фона кастомного чекбокса */
+            border: 1px solid #999; /* Обводка кастомного чекбокса */
+            border-radius: 3px; /* Скругление углов кастомного чекбокса */
+            margin-right: 2px; /* Расстояние между чекбоксом и текстом */ 
+            background-color: #5D5FEF;
+        }
+
+        /* Изменяем внешний вид чекбокса при его активации (выборе) */
+        input[type="checkbox"]:checked::before {
+            background-color: #5D5FEF; /* Цвет фона кастомного чекбокса при выборе */
+            content: "\2713";
+            color: #fff;
+   
+        }
+
     </style>
     <title>Login Form</title>
 </head>
@@ -95,18 +111,18 @@
         <form action="">
             <div class="form-group">
                 <label for="username">Login:</label>
-                <input type="text" id="username" name="username" required>
+                <input class="form-group-input" type ="text" id="username" name="username" required>
             </div>
             <div class="form-group">
                 <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
+                <input class="form-group-input" type="password" id="password" name="password" required>
             </div>
             <div class="form-group checkbox">
                 <input type="checkbox" id="remember" name="remember">
                 <label for="remember">Запомнить меня</label>
             </div>
             <div class="form-group">
-                <button type="submit">Login</button>
+                <button type="submit">Войти</button>
             </div>
         </form>
     </div>

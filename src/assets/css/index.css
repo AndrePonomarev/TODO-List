@@ -79,13 +79,15 @@ footer {
 .auth__button {
   margin: 10px 10px 10px 0px;
   border-radius: 50%;
-  width: 25px;
   height: 40px;
-  font-size: 26px;
+  font-size: 18px;
   width: 40px;
   background-color: rgb(216, 218, 216);
   text-decoration: none;
-  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #454439;
 }
   
 
@@ -116,6 +118,17 @@ footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  
+}
+
+.kanban__title {
+  display: flex;
+  align-items: center;
+  padding: 0px 0px 0px 6px;
+}
+
+.kanban__title img {
+  margin: 0px 7px 0px 0px;
 }
 
 .task-item_title {
@@ -124,13 +137,20 @@ footer {
 
 .task-item {
   background-color: rgb(246, 239, 255);
-  border-radius: 5px;
-  padding: 10px;
+  border-radius: 8px;
+  padding: 10px 15px; /*верх право*/
   margin: 10px;
 }
 
 .task-icon {
   margin: 15px 0px 0px 0px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-item__datetime {
+  color: #7d6488; 
 }
 
 .task-item_description {
@@ -147,16 +167,14 @@ footer {
 .kanban__column.kanban__column--to-do,
 .kanban__column.kanban__column--done {
   background-color: rgb(221, 192, 255);
-  max-height: 210px; 
-  overflow-y: auto;
+  height: fit-content; 
 }
 
 .kanban__column.kanban__column--in-progress {
   background-color: rgb(221, 192, 255);
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  height: 350px;
+  height: fit-content;
 }
 
 
