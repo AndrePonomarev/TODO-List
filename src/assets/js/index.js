@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     const draggables = document.querySelectorAll('.task-item');
     const columns = document.querySelectorAll('.kanban__column');
-    //const addButton = document.querySelectorAll('.kanban__plus');
+    const addButton = document.querySelectorAll('.kanban__plus');
 
 
     draggables.forEach(draggable => {
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     columns.forEach(column => {
         column.addEventListener('dragover', event => {
             event.preventDefault();
-            const draggable = document.querySelector('dragging');
+            const draggable = document.querySelector('.dragging');
             column.querySelector('.kanban__list').appendChild(draggable); //или обращаться к kanban colomn to do и т.п
     
         });
