@@ -147,6 +147,7 @@ footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  
 }
 
 .task-item__datetime {
