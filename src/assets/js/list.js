@@ -4,14 +4,7 @@ const columns = [
     title: "Задачи",
     icon: "./src/assets/img/kanban/kanban__column--to-do.svg",
     tasks: [
-      {
-        id: 1,
-        title: "Задача 1",
-        description: "Описание задачи 1",
-        complexity: "high",
-        dueDate: "2023.11.16",
-        columnId: "to-do"
-      },
+  
     ]
   },
   {
@@ -19,14 +12,7 @@ const columns = [
     title: "В процессе",
     icon: "./src/assets/img/kanban/kanban__column--in-progress.svg",
     tasks: [
-      {
-        id: 1,
-        title: "Задача 2",
-        description: "Описание задачи 2",
-        complexity: "high",
-        dueDate: "2023.11.29",
-        columnId: "to-do"
-      },
+    1
     ]
   },
   {
@@ -48,3 +34,8 @@ const tasks = [
     columnId: "to-do"
   },
 ];
+
+const user = {
+  login: 'admin',
+  password: '123',
+}

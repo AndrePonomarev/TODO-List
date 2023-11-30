@@ -1,4 +1,8 @@
 document.addEventListener('DOMContentLoaded', (event) => {
+    localStorage.setItem("authToken", 12321321);
+    
+    const authToken = localStorage.getItem("authToken");
+    console.log(authToken)
     renderKanban()
     dragAndDrop()
 
