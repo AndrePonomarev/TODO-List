@@ -9,7 +9,7 @@ const columns = [
         title: "Задача 1",
         description: "Описание задачи 1",
         complexity: "high",
-        dueDate: "16.11.2023",
+        dueDate: "2023.11.16",
         columnId: "to-do"
       },
     ]
@@ -24,7 +24,7 @@ const columns = [
         title: "Задача 2",
         description: "Описание задачи 2",
         complexity: "high",
-        dueDate: "29.11.2023",
+        dueDate: "2023.11.29",
         columnId: "to-do"
       },
     ]
@@ -44,7 +44,7 @@ const tasks = [
     title: "Задача 1",
     description: "Описание задачи 1",
     complexity: "high",
-    dueDate: "16.11.2023",
+    dueDate: "2023.11.16",
     columnId: "to-do"
   },
 ];

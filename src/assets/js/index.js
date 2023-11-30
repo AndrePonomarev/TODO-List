@@ -78,6 +78,7 @@ function getComplexityClass(taskDate) {
     const dueDate = new Date(taskDate);
     const timeDiff = dueDate.getTime() - currentDate.getTime();
     const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    
 
     if (daysDiff <= 7) {
         return '<div class="task-icon"><img src="./src/assets/img/green.png" style="width: 90px;">';
@@ -95,7 +96,7 @@ function renderTaskElement(task) {
     <div class="task-item" draggable="true">
           <h3 class="task-item_title">${task.title}</h3>
             <input class="task-item_description" value="${task.description}">
-              <div class="task-icon"><img src="./src/assets/img/yellow.png" style="width: 90px;">
+            ${getComplexityClass(task.dueDate)}
                 <span class="task-item__datetime">${task.dueDate}</span></div>
         </div>
 `;
