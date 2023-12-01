@@ -12,6 +12,7 @@
     border-radius: 8px;
     padding: 10px;
     margin: 0 10px 20px;
+    background-color: rgb(221, 192, 255);
 }
 
 .kanban__title {
@@ -20,4 +21,9 @@
     color: rgb(73, 32, 120);
     margin: 0;
     font-size: 15px;
+}
+
+.kanban__icon--add:hover {
+    cursor: pointer;
+    opacity: .5;
 }

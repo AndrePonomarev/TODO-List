@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (user.login === login && user.password === password) {
             const token = 32323; //Math.random().toString(36).substr(2)
             localStorage.setItem("authToken", token);
-            window.location.href = "file:///C:/Users/cr_ovr_fr6/Desktop/TODOskeleton/todo-skeleton/index.html";
+            window.location.href = "file:///c%3A/OSPanel/domains/Todo%20Skeleton/todo-skeleton/index.html#";
             return;
         } 
         else {

@@ -14,62 +14,25 @@
   </header>
   
   <main class="kanban container">
-    <!-- <section class="kanban__column kanban__column--to-do">
-      <div class="kanban__title-main">
-      <h2 class="kanban__title"> <img src="./src/assets/img/task1.png" style="width: 20px;">  Задачи</h2>
-      <button class="kanban__plus">+</button>
-    </div>
-      <div class="kanban__list">
-        <div class="task-item" draggable="true">
-          <h3 class="task-item_title">Задача 2</h3>
-            <input class="task-item_description" value="Описание задачи 2"></input>
-              <div class="task-icon"><img src="./src/assets/img/yellow.png" style="width: 90px;">
-                <span class="task-item__datetime">1.12.2023</span></div>
-        </div>
-      </div>
-    </section> -->
-    
-    <!-- <section class="kanban__column kanban__column--in-progress">
-      <div class="kanban__title-main">
-        <h2 class="kanban__title"> <img src="./src/assets/img/task2.png" style="width: 20px;">  В процессе</h2>
-        <button class="kanban__plus">+</button>
-      </div>
-        <div class="kanban__list">
-          <div class="task-item" draggable="true">
-            <h3 class="task-item_title">Задача 9</h3>
-              <input class="task-item_description" value="Описание задачи 9"></input>
-                <div class="task-icon"><img src="./src/assets/img/green.png" style="width: 90px;">
-                  <span class="task-item__datetime">20.12.2023</span></div>
-          </div>
-        </div>
 
-        
-        </div>
-          <div class="kanban__list">
-            <div class="task-item" draggable="true">
-              <h3 class="task-item_title">Задача 5</h3>
-                <input class="task-item_description" value="Описание задачи 5"></input>
-                  <div class="task-icon"><img src="./src/assets/img/red.png" style="width: 90px;">
-                    <span class="task-item__datetime">18.11.2023</span></div>
-            </div>
-          </div>
-          
-    </section>
-    
-    <section class="kanban__column kanban__column--done">
-      <div class="kanban__title-main">
-        <h2 class="kanban__title"> <img src="./src/assets/img/task3.png" style="width: 20px;">  Выполнено</h2>
-        <button class="kanban__plus">+</button>
+   
+  
       </div>
-        <div class="kanban__list">
-          <div class="task-item" draggable="true">
-            <h3 class="task-item_title">Задача 10</h3>
-              <input class="task-item_description" value="Описание задачи 10"></input>
-                <div class="task-icon"><img src="./src/assets/img/purple.png" style="width: 90px;">
-                  <span class="task-item__datetime">1.10.2034</span></div>
-          </div>
+  
+      <div class="modal"> 
+        <div class="modal__container">
+          <a href="#" class="close-modal">✖</a> 
+          <form>
+            <input type="text" id="title-task" name="title" placeholder="Введите заголовок задачи"/>
+            <textarea id="description-task" name="description" placeholder="Введите описание задачи"></textarea>
+            <input type="date" name="date" placeholder="Выберите дату"/>
+            <button type="submit">Отправить</button>
+            <button type="button" class="cancel-button">Отмена</button> 
+          </form>
         </div>
-    </section> -->
+      </div>
+      
+    </main>
     
   </main>
   
