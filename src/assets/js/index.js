@@ -131,7 +131,9 @@ function renderTaskElement(task) {
             <input class="task-item_description" value="${task.description}">
             ${getComplexityClass(task.dueDate)}
             <span class="task-item__datetime">${task.dueDate}</span>
-            <button class="edit-task-button">Edit</button>
+            <button class="edit-task-button">
+            <img src="./src/assets/img/edit-icon.png" alt="Edit">
+        </button>
         </div>
     `;
 
@@ -145,52 +147,35 @@ function renderTaskElement(task) {
 
 function openEditModal(task) {
     const editModal = document.querySelector(".edit-modal");
-
-    if (!editModal) {
-        console.error("Edit modal not found");
-        return;
-    }
-
     const editForm = editModal.querySelector("form");
-
-    if (!editForm) {
-        console.error("Edit form not found");
-        return;
-    }
-
     const titleInput = editForm.querySelector("#edit-title-task");
     const descriptionInput = editForm.querySelector("#edit-description-task");
     const dateInput = editForm.querySelector('input[name="date"]');
     const saveButton = editForm.querySelector("button[type='submit']");
     const cancelButton = editForm.querySelector(".cancel-button");
 
-    if (!titleInput || !descriptionInput || !dateInput || !saveButton || !cancelButton) {
-        console.error("One or more form elements not found");
-        return;
-    }
-
     titleInput.value = task.title;
     descriptionInput.value = task.description;
     dateInput.value = task.dueDate;
 
-    // Добавьте информацию о задаче в data-атрибут кнопки сохранения
+    // Добавляем информацию о задаче в data-атрибут кнопки сохранения
     saveButton.dataset.taskId = task.id;
 
-    // Добавьте слушатель для редактирования задачи
+    // Добавляем слушатель для редактирования задачи
     editForm.addEventListener("submit", (e) => {
         e.preventDefault();
 
-        // Получите информацию о задаче из data-атрибута кнопки сохранения
+        // Получаем информацию о задаче из data-атрибута кнопки сохранения
         const taskId = saveButton.dataset.taskId;
         const taskToUpdate = tasks.find(task => task.id === parseInt(taskId, 10));
 
         if (taskToUpdate) {
-            // Обновите свойства задачи
+            // Обновляем свойства задачи
             taskToUpdate.title = titleInput.value;
             taskToUpdate.description = descriptionInput.value;
             taskToUpdate.dueDate = dateInput.value;
 
-            // Обновите отображение задачи
+            // Обновляем отображение задачи
             const taskItem = document.querySelector(`.task-item[data-task-id="${taskToUpdate.id}"]`);
 
             const taskTitle = taskItem.querySelector(".task-item_title");
@@ -201,18 +186,18 @@ function openEditModal(task) {
             taskDescription.value = taskToUpdate.description;
             taskDate.textContent = taskToUpdate.dueDate;
 
-            // Закройте модальное окно
+            // Закрываем модальное окно
             editModal.style.display = "none";
         }
     });
 
-    // Добавьте слушатель для кнопки "Отмена"
+    // Добавляем слушатель для кнопки "Отмена"
     cancelButton.addEventListener("click", () => {
-        // Закройте модальное окно
+        // Закрываем модальное окно
         editModal.style.display = "none";
     });
 
-    // Отобразите модальное окно редактирования
+    // Отображаем модальное окно редактирования
     editModal.style.display = "flex";
 }
 

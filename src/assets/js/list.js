@@ -3,17 +3,13 @@ const columns = [
     id: "to-do",
     title: "Задачи",
     icon: "./src/assets/img/kanban/kanban__column--to-do.svg",
-    tasks: [
-  
-    ]
+    tasks: []
   },
   {
     id: "in-progress",
     title: "В процессе",
     icon: "./src/assets/img/kanban/kanban__column--in-progress.svg",
-    tasks: [
-    1
-    ]
+    tasks: []
   },
   {
     id: "done",

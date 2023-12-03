@@ -20,9 +20,9 @@
 }
 
 .edit-task-button {
-    background-color: #4CAF50; /* Зеленый цвет */
+    
     color: white;
-    padding: 10px;
+    padding: 5px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -30,5 +30,9 @@
 }
 
 .edit-task-button:hover {
-    background-color: #45a049; /* Темно-зеленый цвет при наведении */
+    background-color: rgb(62, 150, 65) /* цвет при наведении */
+}
+.edit-task-button img {
+    width: 20px; /* устанавливает ширину картинки в 20 пикселей */
+    height: 20px; /* устанавливает высоту картинки в 20 пикселей */
 }
