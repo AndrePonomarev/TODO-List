@@ -5,23 +5,32 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     renderKanban()
     dragAndDrop()
+    plusKanban()
 
-    const addTaskButtons = document.querySelectorAll(".kanban__plus");
+
     const modal = document.querySelector(".modal");
     const closeModalButton = document.querySelector(".close-modal");
     const cancelButton = document.querySelector(".cancel-button");
-    const form = document.querySelector(".modal form");
+    const form = document.querySelectorAll(".modal form");
+
+    const addColumnButton = document.querySelector(".header__plus");
+    addColumnButton.addEventListener("click", () => {
+
+
+        dragAndDrop();
+        openAddColumnModal()
+    });
 
     // =========================================================================
-    form.addEventListener("submit", (e) => {
+    form[0].addEventListener("submit", (e) => {
         e.preventDefault();
 
         const taskTitle = document.getElementById("title-task").value;
         const taskDescription = document.getElementById("description-task").value;
-        const taskDate = form.elements["date"].value;
+        const taskDate = form[0].elements["date"].value;
 
         // Получаем информацию о текущей колонке из датасета формы
-        const columnId = form.dataset.columnId;
+        const columnId = form[0].dataset.columnId;
 
         const newTask = {
             id: tasks.length + 1,
@@ -44,16 +53,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
 
     // =========================================================================
-
-    addTaskButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-            modal.style.display = "flex";
-
-            // Сохраняем информацию о текущей колонке в датасет формы
-            const columnId = button.closest('.kanban__column').dataset.columnId;
-            form.dataset.columnId = columnId;
-        });
-    });
 
     closeModalButton.addEventListener("click", () => {
         modal.style.display = "none";
@@ -103,6 +102,30 @@ function dragAndDrop() {
 
 }
 
+function plusKanban() {
+
+    const modal = document.querySelector(".modal");
+    const closeModalButton = document.querySelector(".close-modal");
+    const cancelButton = document.querySelector(".cancel-button");
+    const form = document.querySelectorAll(".modal form");
+    const addTaskButtons = document.querySelectorAll(".kanban__plus");
+    addTaskButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+            showModal(button);
+        });
+    });
+
+    addTaskButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+            modal.style.display = "flex";
+
+            // Сохраняем информацию о текущей колонке в датасет формы
+            const columnId = button.closest('.kanban__column').dataset.columnId;
+            form[0].dataset.columnId = columnId;
+        });
+    });
+
+}
 
 function getComplexityClass(taskDate) {
     const currentDate = new Date();
@@ -200,6 +223,69 @@ function openEditModal(task) {
     // Отображаем модальное окно редактирования
     editModal.style.display = "flex";
 }
+
+function openAddColumnModal() {
+    const addColumnModal = document.querySelector(".add-column-modal");
+    const addColumnForm = addColumnModal.querySelector("form");
+    const newColumnTitleInput = addColumnForm.querySelector("#new-column-title");
+    const submitButton = addColumnForm.querySelector("button[type='submit']");
+    const cancelButton = addColumnForm.querySelector(".cancel-button");
+
+    // Очищаем поле ввода при открытии модального окна
+    newColumnTitleInput.value = "";
+
+    // Добавляем слушатель для добавления колонки
+    addColumnForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+
+        const newColumnTitle = newColumnTitleInput.value;
+
+        if (newColumnTitle.trim() !== "") {
+            // Добавляем новую колонку
+            const newColumn = {
+                id: `new-column-${columns.length + 1}`,
+                title: newColumnTitle,
+                icon: "./src/assets/img/kanban/kanban__column--default.svg",
+                tasks: []
+            };
+            console.log(newColumn)
+            columns.push(newColumn);
+
+            const columnSection = document.createElement("section");
+            columnSection.className = `kanban__column kanban__column--${newColumn.id}`;
+            columnSection.innerHTML = `
+                <section class="kanban__column" data-column-id="${newColumn.id}">
+                    <div class="kanban__title-main">
+                        <h2 class="kanban__title">
+                            <img src="${newColumn.icon}" style="width: 20px;">${newColumn.title}
+                        </h2>
+                        <button class="kanban__plus">+</button>
+                    </div>
+                    <div class="kanban__list"></div>
+                </section>
+            `;
+
+            const listContainer = columnSection.querySelector(".kanban__list");
+            document.querySelector('.kanban').appendChild(columnSection);
+            addColumnModal.style.display = "none";
+
+            // Переносим drag-and-drop функционал на новую колонку
+            dragAndDrop();
+            plusKanban()
+        }
+    });
+
+    // Добавляем слушатель для кнопки "Отмена"
+    cancelButton.addEventListener("click", () => {
+        // Закрываем модальное окно
+        addColumnModal.style.display = "none";
+    });
+
+    // Отображаем модальное окно
+    addColumnModal.style.display = "flex";
+}
+
 
 
 function renderKanban() { //создание и отображение Kanban-доски в DOM

@@ -1,4 +1,4 @@
-.edit-modal {
+.edit-modal, .add-column-modal {
     display: none;
     position: fixed;
     top: 0;
