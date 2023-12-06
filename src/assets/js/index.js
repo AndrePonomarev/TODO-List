@@ -109,11 +109,7 @@ function plusKanban() {
     const cancelButton = document.querySelector(".cancel-button");
     const form = document.querySelectorAll(".modal form");
     const addTaskButtons = document.querySelectorAll(".kanban__plus");
-    addTaskButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-            showModal(button);
-        });
-    });
+    
 
     addTaskButtons.forEach((button) => {
         button.addEventListener("click", () => {
@@ -246,10 +242,9 @@ function openAddColumnModal() {
             const newColumn = {
                 id: `new-column-${columns.length + 1}`,
                 title: newColumnTitle,
-                icon: "./src/assets/img/kanban/kanban__column--default.svg",
+                icon: "./src/assets/img/task1.png",
                 tasks: []
             };
-            console.log(newColumn)
             columns.push(newColumn);
 
             const columnSection = document.createElement("section");
