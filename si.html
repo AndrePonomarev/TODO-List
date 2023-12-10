@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url('src/assets/img/sign-in-img.png');
+            background-size: cover; /* Это для установки размера фона по размеру экрана */
+            background-repeat: no-repeat; /* Это для предотвращения повторения фона */
+            background-position: center; /* Это для центрирования фона */
+            margin: 0; /* Это убирает внешний отступ у body */
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .login-form {
+            
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            color: rgb(244, 242, 255);
+            width: 315px;
+            height: 330px;
+            top: 205px;
+            left: 482px;
+        }
+
+        .login-form > h1 {
+            font-size: 45px;
+            margin-right: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: white;
+            font-size: 14px;
+            padding: 0px 0px 0px 10px;
+
+        }
+
+
+        .form-group-input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border-radius: 10px;
+            width: 300px; /* Ширина поля ввода */
+            height: 45px; /* Высота поля ввода */
+            background: rgba(213, 204, 255, 1);
+
+        }
+
+        .form-group.checkbox {
+            width: 100%;
+            border-radius: 5px;
+            display: flex; /* Используем flex для размещения элементов в одной строке */
+            align-items: center; /* Выравниваем элементы по центру вертикально */
+        }
+
+        .form-group button {
+            background-color: rgb(93, 95, 239);
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;  
+            
+        }
+
+        
+
+        input[type="checkbox"]::before {
+            content: "";
+            display: inline-block;
+            width: 16px; /* Размер чекбокса */
+            height: 16px; /* Размер чекбокса */
+            background-color: #fff; /* Цвет фона чекбокса */
+            border: 1px solid #999; /* Обводка чекбокса */
+            border-radius: 3px; /* Скругление углов чекбокса */
+            margin-right: 2px; /* Расстояние между чекбоксом и текстом */ 
+            background-color: #5D5FEF;
+        }
+
+        /* Изменяем внешний вид чекбокса при его активации (выборе) */
+        input[type="checkbox"]:checked::before {
+            background-color: #5D5FEF; /* Цвет фона кастомного чекбокса при выборе */
+            content: "\2713";
+            color: black;
+            padding: 0px 0px 3px 3px;
+        }
+
+    </style>
+    <title>Login Form</title>
+</head>
+<body>
+    <div class="login-form">
+        <h1>Авторизация</h1>
+        <form class="form-group" action="">
+            <div class="">
+                <label for="username">Login:</label>
+                <input class="form-group-input" type ="text" id="username" name="username" required>
+            </div>
+            <div class="">
+                <label for="password">Password:</label>
+                <input class="form-group-input" type="password" id="password" name="password" required>
+            </div>
+            <div class=" checkbox">
+                <input type="checkbox" id="remember" name="remember">
+                <label for="remember">Запомнить меня</label>
+            </div>
+            <div class="">
+                <button type="submit">Войти</button>
+            </div>
+        </form>
+    </div>
+</body>
+<script src="./src/assets/js/auth.js"></script>
+<script src="./src/assets/js/list.js"></script>
+</html>

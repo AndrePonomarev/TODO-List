@@ -1,62 +1,31 @@
+<!-- TheTask.vue -->
 <template>
-  <div
-    v-if="task"
-    class="task-item"
-    draggable="true"
-    @dragstart="startDrag"
-    @dragend="endDrag"
-  >
-    <h3 class="task-item__title">{{ task.title }}</h3>
-    <p class="task-item__description">{{ task.description }}</p>
-    <div class="task-item__info">
-      <div class="task-item__complexity complexity">
-        <span
-          v-for="dot in getComplexityDots(task.dueDate)"
-          :class="dot.tag"
-          :key="dot.id"
-          class="complexity__dot"
-        ></span>
-      </div>
-      <div class="task-item__client">{{ task.dueDate }}</div>
+    <div class="task-item">
+        <h3 class="task-item_title">Задача1</h3>
+        <input class="task-item_description" value="">
+        
+        <span class="task-item__datetime"></span>
+        <button class="edit-task-button">
+        <img src="./src/assets/img/edit-icon.png" alt="Edit">
+    </button>
     </div>
-  </div>
-</template>
-
-<script>
-export default {
-  props: {
-    task: {
-      type: Object,
-      default: {},
+  </template>
+  
+  <script>
+  export default {
+    props: {
+      taskId: Number,
     },
-  },
-  methods: {
-    getComplexityDots(taskDate) {
-      const currentDate = new Date();
-      const dueDate = new Date(taskDate);
-      const timeDiff = dueDate.getTime() - currentDate.getTime();
-      const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
-
-      if (daysDiff <= 7) {
-        return [
-          { tag: 'complexity__dot--high' },
-          { tag: 'complexity__dot--high' },
-          { tag: 'complexity__dot--high' },
-        ];
-      } else if (daysDiff <= 14) {
-        return [
-          { tag: 'complexity__dot--medium' },
-          { tag: 'complexity__dot--medium' },
-        ];
-      } else {
-        return [{ tag: 'complexity__dot--low' }];
-      }
+    methods: {
+      openEditTaskModal() {
+        // Здесь вы можете добавить логику для открытия модального окна редактирования задачи
+        // Используйте Vuex Store для управления состоянием
+      },
     },
-    startDrag(event) {
-    event.dataTransfer.setData('text/plain', this.task.id);
-  },
-  },
-};
-</script>
-
-<style scoped></style>
+  };
+  </script>
+  
+  <style scoped>
+  /* Ваши стили для компонента */
+  </style>
+  

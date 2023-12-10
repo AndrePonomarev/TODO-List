@@ -1,95 +1,126 @@
+<!-- TheColumn.vue -->
 <template>
-  <section
-    :class="`kanban__column kanban__column--${column.id}`"
-    @dragover.prevent="allowDrop"
-    @dragenter.prevent="highlightDropArea"
-    @dragleave.prevent="unhighlightDropArea"
-    @drop="handleDrop"
-  >
-    <div class="kanban__header">
-      <div class="kanban__header-content">
-        <img
-          :src="column.icon"
-          :alt="`Колонка ${column.title}`"
-          class="kanban__icon kanban__icon--column"
-        />
-        <h2 class="kanban__title">{{ column.title }}</h2>
+    <section class="kanban__column" :data-column-id="column.id">
+      <div class="kanban__title-main">
+        <h2 class="kanban__title">
+          <img :src="column.icon" style="width: 20px;" />{{ column.title }}
+        </h2>
+        <button class="kanban__plus" @click="openAddTaskModal">+</button>
       </div>
-      <img
-        v-if="column.id !== 'done'"
-        src="../../assets/img/kanban/plus.svg"
-        alt="Добавить задачу"
-        class="kanban__icon kanban__icon--add"
-        @click="$emit('add-task')"
-      />
-    </div>
-    <div class="kanban__list">
-      <kanban-task
-        v-for="taskId in column.tasks"
-        :key="taskId"
-        :task="getTaskById(taskId)"
-      />
-    </div>
-  </section>
-</template>
-
-<script>
-import KanbanTask from './TheTask.vue';
+      <div class="kanban__list">
+        <TheTask
+          v-for="taskId in column.tasks"
+          :key="taskId"
+          :taskId="taskId"
+          @openEditTaskModal="openEditTaskModal"
+        />
+      </div>
+  
+      <!-- Модальное окно -->
+      <div class="modal" :class="{ 'modal--active': isModalOpen }">
+        <div class="modal__container">
+          <a href="#" class="close-modal" @click="closeModal">✖</a>
+          <form @submit.prevent="addTask">
+            <input type="text" v-model="taskTitle" id="title-task" name="title" placeholder="Введите заголовок задачи" />
+            <textarea v-model="taskDescription" id="description-task" name="description" placeholder="Введите описание задачи"></textarea>
+            <input type="date" v-model="taskDate" name="date" placeholder="Выберите дату" />
+            <button type="submit">Отправить</button>
+            <button type="button" class="cancel-button" @click="closeModal">Отмена</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </template>
+  
+  <script>
+import TheTask from "./TheTask.vue";
 
 export default {
   props: {
-    column: {
-      type: Object,
-      default: {},
-    },
-    tasks: {
-      type: Object,
-      default: {},
-    },
+    column: Object,
+    tasks: Array, // Используйте пропс tasks вместо массива tasks
   },
-  
   components: {
-    KanbanTask,
+    TheTask,
   },
-
-  data(){
+  data() {
     return {
-      localTask: this.tasks,
-    }
+      isModalOpen: false,
+      taskTitle: "",
+      taskDescription: "",
+      taskDate: "",
+    };
   },
-
   methods: {
-    getTaskById(taskId) {
-      return this.localTask.find((task) => task.id === taskId);
+    openAddTaskModal() {
+      this.isModalOpen = true;
     },
-    allowDrop(event) {
-      event.preventDefault();
-    },
-    handleDrop(event) {
-    event.preventDefault();
-    const taskId = event.dataTransfer.getData('text/plain');
-    this.$emit('task-dropped', Number(taskId), this.column.id);
-  },
-    
-    
-    highlightDropArea(event) {
-      event.target.classList.add('highlighted-drop-area');
-    },
-    unhighlightDropArea(event) {
-      event.target.classList.remove('highlighted-drop-area');
-    },
-  },
+    addTask() {
+    // Создайте новую задачу
+    const newTask = {
+      id: this.column.tasks.length + 1, // Используйте this.column.tasks.length
+      title: this.taskTitle,
+      description: this.taskDescription,
+      complexity: "medium",
+      dueDate: this.taskDate,
+      columnId: this.column.id,
+    };
 
-  watch: {
-    tasks(newTasks) {
-      this.localTask = newTasks;
+    // Обновите массив задач в текущей колонке
+    this.column.tasks.push(newTask.id);
+
+    // Обновите массив задач в родительском компоненте (App.vue)
+    this.$emit("addTask", newTask);
+
+    // Закройте модальное окно
+    this.closeModal();
+  },
+    closeModal() {
+      this.isModalOpen = false;
+      // Сбросить значения полей при закрытии модального окна
+      this.taskTitle = "";
+      this.taskDescription = "";
+      this.taskDate = "";
     },
-  }
+    openEditTaskModal(taskId) {
+      // Здесь обработайте открытие модального окна редактирования задачи
+      // Используйте Vuex Store для управления состоянием
+      this.$emit("openEditTaskModal", taskId);
+    },
+  },
 };
 </script>
 
-<style scoped>
-.highlighted-drop-area {
-  border: 2px dashed #333;
-}
-</style>
+  
+  <style scoped>
+ /* Ваши стили для модального окна */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal__container {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  .modal--active {
+    display: flex;
+  }
+  
+  /* Дополнительные стили для кнопки "+" */
+  .kanban__plus {
+    cursor: pointer;
+  }
+  
+  </style>
+  
