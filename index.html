@@ -1,74 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./src/assets/css/index.css">
-  <title>To-Do-List-Kanban</title>
-</head>
-
-<body>
-  <header class="header">
-    <input class="header__title" value="Kanban Board"></input>
-    <button class="header__plus">+ </button>
-    <a class="auth__button" href="./signin.html"> А.А</a>
-  </header>
-
-  <main class="kanban container">
-
-
-
-    </div>
-
-    <div class="modal">
-      <div class="modal__container">
-        <a href="#" class="close-modal">✖</a>
-        <form>
-          <input type="text" id="title-task" name="title" placeholder="Введите заголовок задачи" />
-          <textarea id="description-task" name="description" placeholder="Введите описание задачи"></textarea>
-          <input type="date" name="date" placeholder="Выберите дату" />
-          <button type="submit">Отправить</button>
-          <button type="button" class="cancel-button">Отмена</button>
-        </form>
-      </div>
-    </div>
-
-    <!-- Добавленный блок редактирования -->
-    <div class="edit-modal">
-      <div class="modal__container">
-        <a href="#" class="close-modal">✖</a>
-        <form>
-          <input type="text" id="edit-title-task" name="title" placeholder="Введите заголовок задачи" />
-          <textarea id="edit-description-task" name="description" placeholder="Введите описание задачи"></textarea>
-          <input type="date" name="date" placeholder="Выберите дату" />
-          <button type="submit">Сохранить изменения</button>
-          <button type="button" class="cancel-button">Отмена</button>
-        </form>
-      </div>
-    </div>
-    
- <!-- Добавленный блок добавления новых колонок -->
-    <div class="add-column-modal">
-      <div class="modal__container">
-          <a href="#" class="close-modal">✖</a>
-          <form>
-              <input type="text" id="new-column-title" name="title" placeholder="Введите заголовок колонки" required />
-              <button type="submit">Добавить колонку</button>
-              <button type="button" class="cancel-button">Отмена</button>
-          </form>
-      </div>
-  </div>
-
-  </main>
-
-
-  <footer class="footer">
-    <p class="footer__text">To-Do-List-Kanban</p>
-  </footer>
-</body>
-<script src="./src/assets/js/index.js"></script>
-<script src="./src/assets/js/list.js"></script>
-<script src="./src/assets/js/auth.js"></script>
-
+  <head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./src/assets/css/index.css">
+    <title>Vite App</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
 </html>

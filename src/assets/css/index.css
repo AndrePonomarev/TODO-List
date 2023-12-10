@@ -1,15 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,100;9..40,200;9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900;9..40,1000&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import './component/_header.css';
 @import './component/_kanban.css';
+@import './component/_main.css';
+@import './component/_task.css';
 @import './component/_modal.css';
-@import './component/_modal2.css';
 @import './_media.css';
 
-
-
-
 * {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 * {
@@ -18,82 +16,28 @@
   padding: 0;
 }
 
-body {
-  font-family: 'Arial', sans-serif;
-  background-color: rgb(64, 0, 138);
-  color: white;
+body, #app{
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  background-color: #2B1887;
+  color: white;
   min-height: 100vh;
+  min-width: 380px;
 }
 
-header {
-  background-color: rgb(44, 0, 97);
-  margin: 10px auto;
-  justify-content: center;
-  width: 1000px;
-  border-radius: 5px;
-  padding: 0px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+html {
+  min-width: 380px;
 }
+
+.header__container,
 footer {
-  background-color: rgb(44, 0, 97);
+  background-color: #1C0E5E;
   text-align: center;
   padding: 10px 0;
 }
 
-.header__title {
-  height: 25px;
-  width: 850px;
-  text-align: left;
-  font-weight: 300;
-  font-size: 25px;
-  outline: none;
-  background-color: rgb(44, 0, 97);
-  margin: 10px 10px 10px 15px;
-  justify-content: center;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  color: white;
-  
-}
-
-.header__plus {
-  text-align: right;
-  margin: 5px auto;
-  padding: 5px 5px 5px 5px;
-  font-size: 25px;
-  margin-right: 5px;
-  color: rgb(139, 26, 26);
-  background-color: rgb(44, 0, 97);
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  color: white;
-}
-
-.auth__button {
-  margin: 10px 10px 10px 0px;
-  border-radius: 50%;
-  height: 40px;
-  font-size: 18px;
-  width: 40px;
-  background-color: rgb(216, 218, 216);
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #454439;
-}
-  
-
+.header__title,
 .footer__text {
   margin: 0;
   padding: 10px 0;
@@ -101,84 +45,10 @@ footer {
 
 .container {
   width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
-  margin-right: auto;
-  margin-left: auto;
+  padding: 0 15px;
+  margin: 0 auto;
 }
 
-.kanban__plus {
-  margin: 0px 5px 10px 5px;
-  color: rgb(60, 21, 100);
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  background-color: rgb(221, 192, 255);
-  font-size: 30px;
+.goog-gt-tt {
+  display: none;
 }
-
-.kanban__title-main {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  
-}
-
-.kanban__title {
-  display: flex;
-  align-items: center;
-  padding: 0px 0px 0px 6px;
-}
-
-.kanban__title img {
-  margin: 0px 7px 0px 0px;
-}
-
-.task-item_title {
-  color: black;
-}
-
-.task-item {
-  background-color: rgb(246, 239, 255);
-  border-radius: 8px;
-  padding: 10px 15px; /*верх право*/
-  margin: 10px;
-}
-
-.task-icon {
-  margin: 15px 0px 0px 0px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  
-}
-
-.task-item__datetime {
-  color: #7d6488; 
-}
-
-.task-item_description {
-  font-size: 14px;
-  width: 300px;
-  outline: none;
-  padding: 10px 0px 0px 0px;
-  color: grey;
-  background-color: rgb(246, 239, 255);
-  border: none;
-  cursor: pointer;
-}
-
-.kanban__column.kanban__column--to-do,
-.kanban__column.kanban__column--done {
-  background-color: rgb(221, 192, 255);
-  height: fit-content; 
-}
-
-.kanban__column.kanban__column--in-progress {
-  background-color: rgb(221, 192, 255);
-  display: flex;
-  flex-direction: column;
-  height: fit-content;
-}
-
-
