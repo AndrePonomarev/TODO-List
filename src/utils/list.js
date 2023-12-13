@@ -30,8 +30,8 @@ export const columns = [
     },
   ];
   
-//   export const user = {
-//     login: 'admin',
-//     password: '123',
-//   };
+  export const user = {
+    login: 'admin',
+    password: '123',
+  };
   

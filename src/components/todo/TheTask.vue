@@ -1,10 +1,14 @@
 <!-- TheTask.vue -->
 <template>
-    <div class="task-item">
-        <h3 class="task-item_title">Задача1</h3>
-        <input class="task-item_description" value="">
+    <div class="task-item"
+    draggable="true"
+    @dragstart="startDrag"
+    @dragend="endDrag"
+  >
+        <h3 class="task-item_title"> {{ task.title }} </h3>
+        <p class="task-item_description">{{ task.description }}</p>
         
-        <span class="task-item__datetime"></span>
+        <span class="task-item__datetime">{{ task.dueDate }}</span>
         <button class="edit-task-button">
         <img src="./src/assets/img/edit-icon.png" alt="Edit">
     </button>
@@ -14,13 +18,25 @@
   <script>
   export default {
     props: {
-      taskId: Number,
+    task: {
+      type: Object,
+      default: {},
     },
+  },
+    // computed: {
+    // task() {
+    //   // Найти задачу по идентификатору taskId
+    //   return this.tasks.find(task => task.id === this.taskId) || {};
+    // }
+  // },
     methods: {
       openEditTaskModal() {
         // Здесь вы можете добавить логику для открытия модального окна редактирования задачи
         // Используйте Vuex Store для управления состоянием
       },
+      startDrag(event) {
+    event.dataTransfer.setData('text/plain', this.task.id);
+  },
     },
   };
   </script>
