@@ -31,8 +31,7 @@
   // },
     methods: {
       openEditTaskModal() {
-        // Здесь вы можете добавить логику для открытия модального окна редактирования задачи
-        // Используйте Vuex Store для управления состоянием
+       
       },
       startDrag(event) {
     event.dataTransfer.setData('text/plain', this.task.id);

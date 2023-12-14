@@ -81,7 +81,7 @@ methods: {
   
   addTask(newTask) {
    newTask = {
-   // id: this.column.tasks.length + 1, // Используйте this.column.tasks.length
+   // id: this.column.tasks.length + 1, 
     title: this.taskTitle,
     description: this.taskDescription,
     //complexity: "medium",
@@ -130,8 +130,7 @@ methods: {
     this.taskDate = "";
   },
   openEditTaskModal(taskId) {
-    // Здесь обработайте открытие модального окна редактирования задачи
-    // Используйте Vuex Store для управления состоянием
+  
     this.$emit("openEditTaskModal", taskId);
   },
   
