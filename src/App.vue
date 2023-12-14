@@ -1,11 +1,8 @@
 <template>
   <TheHeader />
   <div class="kanban">
-    <TheColumn v-for="column in localcolumns" 
-    :key="column.id" 
-    :column="column"
-    :tasks="getTasksByColumnId(column.id)" 
-    @task-dropped="handleTaskDropped"/>
+    <TheColumn v-for="column in localcolumns" :key="column.id" :column="column" :tasks="getTasksByColumnId(column.id)"
+      @task-dropped="handleTaskDropped" />
   </div>
   <TheFooter />
 </template>
@@ -16,13 +13,14 @@ import TheColumn from './components/todo/TheColumn.vue'
 import TheHeader from './components/ui/TheHeader.vue'
 import TheFooter from './components/ui/TheFooter.vue'
 import { columns, tasks } from './utils/list';
+import axios from './utils/axios'
 
 export default {
   components: {
-   
+
     TheHeader,
     TheFooter,
-  //  TheModal,
+    //  TheModal,
     TheColumn,
   },
   data() {
@@ -32,10 +30,56 @@ export default {
       isModalOpen: false,
       currentColumnId: null,
       auth: true,
+      statusses: [],
     };
   },
-
+  //================================================================
   methods: {
+    registration() {
+      console.log('login');
+      const formData = {
+        formData: {
+          name: "guest",
+          email: "andrew2@efko.ru",
+          password: "qwert",
+          confirm_password: "qwert"
+        },
+      };
+
+      fetch('https://a430f081804b.vps.myjino.ru/api/v1/auth/signup', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+    
+
+    //================================================================
+    axios
+    .post('/auth/signin', formData).then((response) => {
+        localStorage.setItem('token', response.data.token)
+      })
+      .catch((error) => {
+        this.errorMessage = 'Произошла ошибка:' + error.message;
+      });
+
+    },
+
+    getStatusses() {
+      axios
+      .get('boards/7/statuses')
+      .then((response) => {
+        this.statusses = response.data
+      })
+      .catch((error) => {
+        this.errorMessage = 'Произошла ошибка:' + error.message;
+      });
+
+    },
+
+
+    //================================================================
     getTasksByColumnId(columnId) {
       return this.localTasks.filter((task) => task.columnId === columnId);
     },
@@ -47,43 +91,51 @@ export default {
     closeModal() {
       this.isModalOpen = false;
     },
-    
+
 
     handleTaskDropped(taskId, targetColumnId) {
-    // Находим текущий columnId задачи
-    const currentTask = this.localTasks.find(task => task.id === taskId);
-    console.log(currentTask)
-    if (!currentTask || currentTask.columnId === targetColumnId) {
-      // Если задача уже в этой колонке или не найдена, ничего не делаем
-      return;
-    }
-
-    // Обновляем localTasks
-    const updatedTasks = this.localTasks.map(task => {
-      if (task.id === taskId) {
-        return { ...task, columnId: targetColumnId };
+      // Находим текущий columnId задачи
+      const currentTask = this.localTasks.find(task => task.id === taskId);
+      console.log(currentTask)
+      if (!currentTask || currentTask.columnId === targetColumnId) {
+        // Если задача уже в этой колонке или не найдена, ничего не делаем
+        return;
       }
-      return task;
-    });
-    this.localTasks = updatedTasks;
 
-
-  
-    this.localcolumns = this.localcolumns.map(column => {
-      if (column.id === targetColumnId) {
-        // Добавляем задачу, если её там ещё нет
-        if (!column.tasks.includes(taskId)) {
-          return { ...column, tasks: [...column.tasks, taskId] };
+      // Обновляем localTasks
+      const updatedTasks = this.localTasks.map(task => {
+        if (task.id === taskId) {
+          return { ...task, columnId: targetColumnId };
         }
-      } else {
-        // Удаляем задачу из текущей колонки
-        return { ...column, tasks: column.tasks.filter(id => id !== taskId) };
-      }
-      return column;
-    });
+        return task;
+      });
+      this.localTasks = updatedTasks;
+
+
+
+      this.localcolumns = this.localcolumns.map(column => {
+        if (column.id === targetColumnId) {
+          // Добавляем задачу, если её там ещё нет
+          if (!column.tasks.includes(taskId)) {
+            return { ...column, tasks: [...column.tasks, taskId] };
+          }
+        } else {
+          // Удаляем задачу из текущей колонки
+          return { ...column, tasks: column.tasks.filter(id => id !== taskId) };
+        }
+        return column;
+      });
+    },
   },
+
+  //================================================================
+  async created() {
+    //this.registration();
+   await this.getStatusses();
   },
 };
+//================================================================
+
 </script>
 
 
