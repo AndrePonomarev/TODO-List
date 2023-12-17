@@ -15,7 +15,7 @@
     </div>
     <div class="kanban__list">
       <TheTask
-        v-for="taskId in column.tasks"
+        v-for="taskId in tasks"
         :key="taskId"
         :taskId="taskId"
         @openEditTaskModal="openEditTaskModal"
@@ -75,8 +75,8 @@ methods: {
   },
 
   getTaskById(taskId) {
-  
-    return this.localTask.find((task) => task.id === taskId);
+    return this.tasks.find((task) => tasks.id === taskId);
+    //return this.localTask.find((task) => task.id === taskId);
   },
   
   addTask(newTask) {

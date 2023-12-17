@@ -25,12 +25,14 @@ export default {
   },
   data() {
     return {
-      localcolumns: columns,
-      localTasks: tasks,
+      //localcolumns: columns,
+      //localTasks: tasks,
       isModalOpen: false,
       currentColumnId: null,
       auth: true,
       statuses: [],
+      boards: [],
+      tasks: [],
     };
   },
   //================================================================
@@ -53,21 +55,21 @@ export default {
         },
         body: JSON.stringify(formData),
       })
-    
 
-    //================================================================
-    // axios
-    // .post('/auth/signin', formData).then((response) => {
-    //     localStorage.setItem('token', response.data.token)
-    //   })
-    //   .catch((error) => {
-    //     this.errorMessage = 'Произошла ошибка:' + error.message;
-    //   });
+
+      //================================================================
+      // axios
+      // .post('/auth/signin', formData).then((response) => {
+      //     localStorage.setItem('token', response.data.token)
+      //   })
+      //   .catch((error) => {
+      //     this.errorMessage = 'Произошла ошибка:' + error.message;
+      //   });
 
     },
 
     login() {
-      
+
       const formData = {
         formData: {
           email: 'andrew@efko.ru',
@@ -84,34 +86,59 @@ export default {
       })
 
       axios
-      .post('/auth/signin', formData)
-      .then((response) => {
-        //console.log(response);
-        localStorage.setItem('token', response.data.token)
-      })
-      .catch((error) => {
-        this.errorMessage = 'Произошла ошибка:' + error.message;
-      });
+        .post('/auth/signin', formData)
+        .then((response) => {
+          //console.log(response);
+          localStorage.setItem('token', response.data.token)
+        })
+        .catch((error) => {
+          this.errorMessage = 'Произошла ошибка:' + error.message;
+        });
     },
 
 
     getStatuses() {
       axios
-      .get('boards/5/statuses')
-      .then((response) => {
-        this.statuses = response.data
-        console.log(this.statuses);
-      })
-      .catch((error) => {
-        this.errorMessage = 'Произошла ошибка:' + error.message;
-      });
+        .get('boards/5/statuses')
+        .then((response) => {
+          this.statuses = response.data
+           console.log(this.statuses);
+        })
+        .catch((error) => {
+          this.errorMessage = 'Произошла ошибка:' + error.message;
+        });
+    },
 
+    getBoards() {
+      axios
+        .get('user/7/boards')
+        .then((response) => {
+          this.boards = response.data
+          //console.log(this.boards);
+        })
+        .catch((error) => {
+          this.errorMessage = 'Произошла ошибка:' + error.message;
+        });
+    },
+
+    getTasks() {
+      axios
+        .get('boards/5/tasks')
+        .then((response) => {
+          this.tasks = response.data
+          console.log(this.tasks);
+        })
+        .catch((error) => {
+          this.errorMessage = 'Произошла ошибка:' + error.message;
+        });
     },
 
 
     //================================================================
     getTasksByColumnId(columnId) {
-      return this.localTasks.filter((task) => task.columnId === columnId);
+      //return this.localTasks.filter((task) => task.columnId === columnId);
+      //console.log(this.tasks);
+      return this.tasks.filter(task => task.statusId === columnId);
     },
     openModal(columnId) {
       this.currentColumnId = columnId;
@@ -161,8 +188,10 @@ export default {
   //================================================================
   async created() {
     //this.registration();
-   await this.login();
-   await this.getStatuses();
+    await this.login();
+    await this.getStatuses();
+    await this.getBoards();
+    await this.getTasks();
   },
 };
 //================================================================
