@@ -1,4 +1,4 @@
-import axios  from "axios";
+import axios from "axios";
 
 const api = axios.create({
     baseURL: 'http://a430f081804b.vps.myjino.ru/api/v1',

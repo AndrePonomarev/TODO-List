@@ -9,7 +9,7 @@
     
     <div class="kanban__title-main">
       <h2 class="kanban__title">
-        <img :src="column.icon" style="width: 20px;" />{{ column.title }}
+        <img :src="column.icon" style="width: 20px;" />{{ column.name }}
       </h2>
       <button class="kanban__plus" @click="openAddTaskModal">+</button>
     </div>

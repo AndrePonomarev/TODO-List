@@ -1,7 +1,7 @@
 <template>
   <TheHeader />
   <div class="kanban">
-    <TheColumn v-for="column in localcolumns" :key="column.id" :column="column" :tasks="getTasksByColumnId(column.id)"
+    <TheColumn v-for="column in statuses" :key="column.id" :column="column" :tasks="getTasksByColumnId(column.id)"
       @task-dropped="handleTaskDropped" />
   </div>
   <TheFooter />
@@ -30,7 +30,7 @@ export default {
       isModalOpen: false,
       currentColumnId: null,
       auth: true,
-      statusses: [],
+      statuses: [],
     };
   },
   //================================================================
@@ -56,21 +56,51 @@ export default {
     
 
     //================================================================
-    axios
-    .post('/auth/signin', formData).then((response) => {
+    // axios
+    // .post('/auth/signin', formData).then((response) => {
+    //     localStorage.setItem('token', response.data.token)
+    //   })
+    //   .catch((error) => {
+    //     this.errorMessage = 'Произошла ошибка:' + error.message;
+    //   });
+
+    },
+
+    login() {
+      
+      const formData = {
+        formData: {
+          email: 'andrew@efko.ru',
+          password: 'qwert',
+        },
+      };
+
+      fetch('https://a430f081804b.vps.myjino.ru/api/v1/auth/signin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      axios
+      .post('/auth/signin', formData)
+      .then((response) => {
+        //console.log(response);
         localStorage.setItem('token', response.data.token)
       })
       .catch((error) => {
         this.errorMessage = 'Произошла ошибка:' + error.message;
       });
-
     },
 
-    getStatusses() {
+
+    getStatuses() {
       axios
-      .get('boards/7/statuses')
+      .get('boards/5/statuses')
       .then((response) => {
-        this.statusses = response.data
+        this.statuses = response.data
+        console.log(this.statuses);
       })
       .catch((error) => {
         this.errorMessage = 'Произошла ошибка:' + error.message;
@@ -131,7 +161,8 @@ export default {
   //================================================================
   async created() {
     //this.registration();
-   await this.getStatusses();
+   await this.login();
+   await this.getStatuses();
   },
 };
 //================================================================
