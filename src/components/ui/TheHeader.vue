@@ -1,10 +1,24 @@
 <template>
   <header class="header">
-     <p class="header__title">Kanban Board</p>
-     <button class="header__plus">+ </button>
-     <a class="auth__button" href="./si.html"> А.А</a>
-   </header>
-   </template>
+    <p class="header__title">Kanban Board</p>
+    <button class="header__plus">+ </button>
+    <router-link to="/login" class="auth__button">А.А</router-link>
+    
+  </header>
+  <router-view />
+</template>
+
+<script>
+import Login from '../Login.vue'
+
+export default {
+  components: {
+
+    
+    Login,
+  },
+}
+</script>
 
    <style>
    header {

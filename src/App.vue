@@ -14,6 +14,8 @@ import TheHeader from './components/ui/TheHeader.vue'
 import TheFooter from './components/ui/TheFooter.vue'
 import { columns, tasks } from './utils/list';
 import axios from './utils/axios'
+import Auth from './components/Auth.vue'
+import Login from './components/Login.vue'
 
 export default {
   components: {
@@ -22,6 +24,8 @@ export default {
     TheFooter,
     //  TheModal,
     TheColumn,
+    Auth,
+    Login,
   },
   data() {
     return {
@@ -42,7 +46,7 @@ export default {
       const formData = {
         formData: {
           name: "guest",
-          email: "andrew2@efko.ru",
+          email: "andrew@efko.ru",
           password: "qwert",
           confirm_password: "qwert"
         },
