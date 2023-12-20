@@ -5,7 +5,7 @@
     @dragstart="startDrag"
     @dragend="endDrag"
   >
-        <h3 class="task-item_title"> {{ task.title }} </h3>
+        <h3 class="task-item_title"> {{ task.name }} </h3>
         <p class="task-item_description">{{ task.description }}</p>
         
         <span class="task-item__datetime">{{ task.dueDate }}</span>

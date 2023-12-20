@@ -106,7 +106,7 @@ export default {
         .get('boards/5/statuses')
         .then((response) => {
           this.statuses = response.data
-           console.log(this.statuses);
+          // console.log(this.statuses);
         })
         .catch((error) => {
           this.errorMessage = 'Произошла ошибка:' + error.message;
@@ -130,7 +130,12 @@ export default {
         .get('boards/5/tasks')
         .then((response) => {
           this.tasks = response.data
-          console.log(this.tasks);
+          for (let tasks of response.data){
+            console.log(tasks.tasks)
+            for (let task of tasks.tasks){
+              this.tasks.push(task)
+            }
+          }
         })
         .catch((error) => {
           this.errorMessage = 'Произошла ошибка:' + error.message;
@@ -140,9 +145,16 @@ export default {
 
     //================================================================
     getTasksByColumnId(columnId) {
-      //return this.localTasks.filter((task) => task.columnId === columnId);
-      //console.log(this.tasks);
-      return this.tasks.filter(task => task.statusId === columnId);
+      
+      
+      return (this.tasks.filter(task => task.statusId === columnId));
+      // return this.tasks.filter(task => task.tasks.statusId === columnId);
+
+      // return this.tasks.filter(function(task){
+      //   console.log(task.tasks)
+      // })
+      
+      //return this.tasks.filter(task => task.statusId === columnId);
     },
     openModal(columnId) {
       this.currentColumnId = columnId;

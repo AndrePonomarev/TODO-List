@@ -15,11 +15,11 @@
     </div>
     <div class="kanban__list">
       <TheTask
-        v-for="taskId in tasks"
-        :key="taskId"
-        :taskId="taskId"
+        v-for="task in tasks"
+        :key="task.id"
+        :taskId="task.id"
         @openEditTaskModal="openEditTaskModal"
-        :task="getTaskById(taskId)"
+        :task="getTaskById(task.id)"
       />
     </div>
 
@@ -50,10 +50,10 @@ props: {
     default: {},
   },
   tasks: {
-    type: Object,
+    type: Array,
     default: {},
   },
-  //tasks: Array,
+ // tasks: Array,
 },
 components: {
   TheTask,
@@ -65,8 +65,8 @@ data() {
     taskTitle: "",
     taskDescription: "",
     taskDate: "",
-    localTask: this.tasks,
-    localColumns: this.column,
+    // localTask: this.tasks,
+    // localColumns: this.column,
   };
 },
 methods: {
@@ -75,7 +75,9 @@ methods: {
   },
 
   getTaskById(taskId) {
-    return this.tasks.find((task) => tasks.id === taskId);
+    console.log(taskId)
+    return this.tasks.find((task) => task.id === taskId);
+    
     //return this.localTask.find((task) => task.id === taskId);
   },
   
@@ -135,11 +137,11 @@ methods: {
   },
   
 },
-watch: {
-  tasks(newTasks) {
-    this.localTask = newTasks;
-  },
-}
+// watch: {
+//   tasks(newTasks) {
+//     this.localTask = newTasks;
+//   },
+// }
 };
 </script>
 
