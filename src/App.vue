@@ -5,7 +5,13 @@
       @task-dropped="handleTaskDropped" />
   </div>
   <TheFooter />
-  <RouterView/>
+    {{ count }}
+<button @click = "increment">увеличить</button>
+<button @click = "decrement">уменьшить</button>
+<button @click = "reset">Сбросить</button>
+<RouterView/>
+
+
 </template>
 
 
@@ -18,7 +24,17 @@ import axios from './utils/axios'
 import Auth from './components/Auth.vue'
 import Login from './components/Login.vue'
 
+import {mapGetters, mapActions, mapMutations} from 'vuex'
+
 export default {
+  computed: {
+    ...mapGetters([
+      'squaredCount'
+    ]),
+    count() {
+      return this.$store.state.count;
+    }
+  },
   components: {
 
     TheHeader,
@@ -42,6 +58,20 @@ export default {
   },
   //================================================================
   methods: {
+
+    ...mapActions ([
+      'increment',
+      'decrement'
+    ]),
+    ...mapMutations([
+      'reset'
+    ]),
+
+    handle(){
+      this.increment()
+    },
+
+
     registration() {
       console.log('login');
       const formData = {

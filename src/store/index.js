@@ -6,24 +6,27 @@ export default createStore({
         //statusses
         //tasks
     },
-    // getters: {
-    //     squaredCount(state)
-    // }
-    // mutations: {
-    //     increment(state) {
-    //         state.count++;
-    //     },
-    //     deincrement(state) {
-    //         state.count++;
-    //     }
+    getters: {
+        squaredCount(state){
+            return state.count - 1;
+        }
+    },
+    mutations: {
+        increment(state) {
+            state.count++;
+        },
+    
+        decrement(state) {
+            state.count--;
+        },
+
+    },
 
     //     //
     // },
 
     actions: {
-        increment: ({ commit }) => {
-            
-        },
-        
-    }
+        increment: ({ commit }) => commit('increment'),
+        decrement: ({ commit }) => commit('decrement'),
+    },
 });
