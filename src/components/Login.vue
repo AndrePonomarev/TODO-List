@@ -4,11 +4,11 @@
     <form class="form-group" @submit.prevent="login">
       <div class="form-group">
         <label for="email">Login:</label>
-        <input class="form-group-input" v-model="formData.formData.email" type="text" id="email" name="email" required>
+        <input class="form-group-input" v-model="formData.email" type="text" id="email" name="email" required>
       </div>
       <div class="form-group">
         <label for="password">Password:</label>
-        <input class="form-group-input" v-model="formData.formData.password" type="password" id="password" name="password"
+        <input class="form-group-input" v-model="formData.password" type="password" id="password" name="password"
           required>
       </div>
       <div class="checkbox">
@@ -28,19 +28,19 @@ export default {
   data() {
     return {
       
-     formData: {
+     
         formData: {
           email: '',
           password: '',
         },
 
-    }
+    
   }
   },
   
   methods: {
     login() {
-      if (!this.formData.formData.email || !this.formData.formData.password) {
+      if (!this.formData.email || !this.formData.password) {
         // Вывести сообщение об ошибке или предпринять другие действия в случае отсутствия данных
         return;
       }
@@ -49,7 +49,7 @@ export default {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(this.formData),
+        body: JSON.stringify({...this.formData}),
       })
       .then(response => {
     // Проверка, успешен ли запрос (статус 200-299)

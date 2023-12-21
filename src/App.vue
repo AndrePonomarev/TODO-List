@@ -5,6 +5,7 @@
       @task-dropped="handleTaskDropped" />
   </div>
   <TheFooter />
+  <RouterView/>
 </template>
 
 
@@ -61,14 +62,14 @@ export default {
       })
 
 
-      //================================================================
-      // axios
-      // .post('/auth/signin', formData).then((response) => {
-      //     localStorage.setItem('token', response.data.token)
-      //   })
-      //   .catch((error) => {
-      //     this.errorMessage = 'Произошла ошибка:' + error.message;
-      //   });
+      // //================================================================
+      // // axios
+      // // .post('/auth/signin', formData).then((response) => {
+      // //     localStorage.setItem('token', response.data.token)
+      // //   })
+      // //   .catch((error) => {
+      // //     this.errorMessage = 'Произошла ошибка:' + error.message;
+      // //   });
 
     },
 
