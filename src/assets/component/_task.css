@@ -56,7 +56,9 @@
 .task-item__description {
   color: gray;
   font-size: 12px;
-  margin: 10px 0;
+ 
+  
+  
 }
 
 .task-item__client {

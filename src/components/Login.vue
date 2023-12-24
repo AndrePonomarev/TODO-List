@@ -8,8 +8,7 @@
       </div>
       <div class="form-group">
         <label for="password">Password:</label>
-        <input class="form-group-input" v-model="formData.password" type="password" id="password" name="password"
-          required>
+        <input class="form-group-input" v-model="formData.password" type="password" id="password" name="password" required>
       </div>
       <div class="checkbox">
         <input type="checkbox" id="remember" v-model="formData.remember">
@@ -21,49 +20,43 @@
     </form>
   </div>
 </template>
-  
+
 <script>
+import axios from '../utils/axios';
 
 export default {
   data() {
     return {
-      
-     
-        formData: {
-          email: '',
-          password: '',
-        },
-
-    
-  }
+      formData: {
+        email: '',
+        password: '',
+        
+      },
+      errorMessage: '',
+    };
   },
-  
   methods: {
     login() {
-      if (!this.formData.email || !this.formData.password) {
-        // Вывести сообщение об ошибке или предпринять другие действия в случае отсутствия данных
-        return;
-      }
-      fetch('https://a430f081804b.vps.myjino.ru/api/v1/auth/signin', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({...this.formData}),
-      })
-      .then(response => {
-    // Проверка, успешен ли запрос (статус 200-299)
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
 
-    // Преобразование ответа в формат JSON
-    return response.json();
-  })
-  .then(data => {
-    // Обработка данных из ответа
-    localStorage.setItem('token', data.token)
-  })
+      const formData = {
+        formData: {
+          email: this.formData.email,
+          password: this.formData.password,
+        },
+      };
+      
+      console.log(this.formData.email)
+      console.log(this.formData.password)
+      axios
+      .post('/auth/signin', formData)
+        .then((response) => {
+          localStorage.setItem('token', response.data.token);
+          // Другие действия после успешной авторизации
+          this.$router.push('/home');
+        })
+        .catch((error) => {
+          this.errorMessage = 'Произошла ошибка: ' + error.message;
+        });
     },
   },
 };
@@ -71,14 +64,17 @@ export default {
   
 <style>
 .login-form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   padding: 20px;
   border-radius: 8px;
   text-align: center;
   color: rgb(244, 242, 255);
   width: 315px;
   height: 330px;
-  top: 205px;
-  left: 482px;
+  /* Дополнительные стили, если нужно */
 }
 
 .login-form>h1 {

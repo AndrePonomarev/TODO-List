@@ -23,14 +23,21 @@
 import { createRouter, createWebHistory } from 'vue-router';
 //import LoginPage from '../components/Login.vue';
 import App from '../App.vue';
+import TheHome from '../components/todo/TheHome.vue'
+import Register from '../components/Register.vue'
 
  const router = createRouter ({
   history: createWebHistory (''),
   routes: [
     {
-      path: '/',
+      path: '/home',
       name: 'home',
-      component: App
+      component: TheHome
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: Register
     },
     {
       path: '/login',

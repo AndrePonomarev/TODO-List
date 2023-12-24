@@ -1,16 +1,11 @@
 <template>
-  <TheHeader />
-  <div class="kanban">
-    <TheColumn v-for="column in statuses" :key="column.id" :column="column" :tasks="getTasksByColumnId(column.id)"
-      @task-dropped="handleTaskDropped" />
-  </div>
-  <TheFooter />
-    {{ count }}
-<button @click = "increment">увеличить</button>
+<!-- {{ count }}
+{{ statuses }}
+   
+<button @click = "getStatuses">увеличить</button>
 <button @click = "decrement">уменьшить</button>
-<button @click = "reset">Сбросить</button>
+<button @click = "reset">Сбросить</button> -->
 <RouterView/>
-
 
 </template>
 
@@ -21,28 +16,32 @@ import TheHeader from './components/ui/TheHeader.vue'
 import TheFooter from './components/ui/TheFooter.vue'
 import { columns, tasks } from './utils/list';
 import axios from './utils/axios'
-import Auth from './components/Auth.vue'
+import Register from './components/Register.vue'
 import Login from './components/Login.vue'
+import TheHome from './components/todo/TheHome.vue'
 
 import {mapGetters, mapActions, mapMutations} from 'vuex'
 
 export default {
+ 
   computed: {
     ...mapGetters([
       'squaredCount'
     ]),
     count() {
-      return this.$store.state.count;
+      return this.$store.state.statuses;
     }
   },
+
   components: {
 
     TheHeader,
     TheFooter,
     //  TheModal,
     TheColumn,
-    Auth,
+   
     Login,
+    Register
   },
   data() {
     return {
@@ -50,9 +49,8 @@ export default {
       //localTasks: tasks,
       isModalOpen: false,
       currentColumnId: null,
-      auth: true,
+     // auth: false,
       statuses: [],
-      boards: [],
       tasks: [],
     };
   },
@@ -60,7 +58,7 @@ export default {
   methods: {
 
     ...mapActions ([
-      'increment',
+       'getStatuses',
       'decrement'
     ]),
     ...mapMutations([
@@ -68,38 +66,39 @@ export default {
     ]),
 
     handle(){
-      this.increment()
+      this.getStatuses()
     },
+
 
 
     registration() {
       console.log('login');
       const formData = {
         formData: {
-          name: "guest",
-          email: "andrew@efko.ru",
+          name: "guest222",
+          email: "andrew222@efko.ru",
           password: "qwert",
           confirm_password: "qwert"
         },
       };
 
-      fetch('https://a430f081804b.vps.myjino.ru/api/v1/auth/signup', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      })
+      // fetch('https://a430f081804b.vps.myjino.ru/api/v1/auth/signup', {
+      //   method: 'PUT',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify(formData),
+      // })
 
 
       // //================================================================
-      // // axios
-      // // .post('/auth/signin', formData).then((response) => {
-      // //     localStorage.setItem('token', response.data.token)
-      // //   })
-      // //   .catch((error) => {
-      // //     this.errorMessage = 'Произошла ошибка:' + error.message;
-      // //   });
+      axios
+      .post('/auth/signup', formData).then((response) => {
+          localStorage.setItem('token', response.data.token)
+        })
+        .catch((error) => {
+          this.errorMessage = 'Произошла ошибка:' + error.message;
+        });
 
     },
 
@@ -111,14 +110,6 @@ export default {
           password: 'qwert',
         },
       };
-
-      fetch('https://a430f081804b.vps.myjino.ru/api/v1/auth/signin', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      })
 
       axios
         .post('/auth/signin', formData)
@@ -132,29 +123,18 @@ export default {
     },
 
 
-    getStatuses() {
-      axios
-        .get('boards/5/statuses')
-        .then((response) => {
-          this.statuses = response.data
-          // console.log(this.statuses);
-        })
-        .catch((error) => {
-          this.errorMessage = 'Произошла ошибка:' + error.message;
-        });
-    },
+    // getStatuses() {
+    //   axios
+    //     .get('boards/5/statuses')
+    //     .then((response) => {
+    //       this.statuses = response.data
+    //       // console.log(this.statuses);
+    //     })
+    //     .catch((error) => {
+    //       this.errorMessage = 'Произошла ошибка:' + error.message;
+    //     });
+    // },
 
-    getBoards() {
-      axios
-        .get('user/7/boards')
-        .then((response) => {
-          this.boards = response.data
-          //console.log(this.boards);
-        })
-        .catch((error) => {
-          this.errorMessage = 'Произошла ошибка:' + error.message;
-        });
-    },
 
     getTasks() {
       axios
@@ -162,7 +142,7 @@ export default {
         .then((response) => {
           this.tasks = response.data
           for (let tasks of response.data){
-            console.log(tasks.tasks)
+            //console.log(tasks.tasks)
             for (let task of tasks.tasks){
               this.tasks.push(task)
             }
@@ -233,12 +213,16 @@ export default {
   },
 
   //================================================================
+  // created() {
+  //   this.getStatuses(); // Вызовите метод getStatuses при создании компонента
+  // },
   async created() {
-    //this.registration();
-    await this.login();
-    await this.getStatuses();
-    await this.getBoards();
+   // await this.registration();
+    //await this.login();
+   // await this.getStatuses();
+    
     await this.getTasks();
+    
   },
 };
 //================================================================

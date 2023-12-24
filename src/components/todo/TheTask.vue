@@ -10,7 +10,7 @@
         
         <span class="task-item__datetime">{{ task.dueDate }}</span>
         <button class="edit-task-button">
-        <img src="./src/assets/img/edit-icon.png" alt="Edit">
+        <img src="../../../src/assets/img/edit-icon.png" alt="Edit">
     </button>
     </div>
   </template>

@@ -28,7 +28,7 @@
       <div class="modal__container">
         <a href="#" class="close-modal" @click="closeModal">✖</a>
         <form @submit.prevent="addTask">
-          <input type="text" v-model="taskTitle" id="title-task" name="title" placeholder="Введите заголовок задачи" />
+          <input type="text" v-model="taskName" id="title-task" name="title" placeholder="Введите заголовок задачи" />
           <textarea v-model="taskDescription" id="description-task" name="description" placeholder="Введите описание задачи"></textarea>
           <input type="date" v-model="taskDate" name="date" placeholder="Выберите дату" />
           <button type="submit">Отправить</button>
@@ -62,7 +62,7 @@ components: {
 data() {
   return {
     isModalOpen: false,
-    taskTitle: "",
+    taskName: "",
     taskDescription: "",
     taskDate: "",
     // localTask: this.tasks,
@@ -75,35 +75,31 @@ methods: {
   },
 
   getTaskById(taskId) {
-    console.log(taskId)
+   // console.log(taskId)
     return this.tasks.find((task) => task.id === taskId);
     
     //return this.localTask.find((task) => task.id === taskId);
   },
   
-  addTask(newTask) {
-   newTask = {
-   // id: this.column.tasks.length + 1, 
-    title: this.taskTitle,
-    description: this.taskDescription,
-    //complexity: "medium",
-    dueDate: this.taskDate,
-    columnId: this.column.id,
-  };
+  addTask() {
+    const newTask = {
+      name: this.taskName,
+      description: this.taskDescription,
+      dueDate: this.taskDate,
+      columnId: this.column.id,
+    };
+    
 
-    const newId = this.localTask.length + 1;
+    const newId = this.tasks.length + 1;
     const newTaskWithId = {
       ...newTask,
       id: newId,
-      columnId: this.currentColumnId,
     };
-    this.localTask.push(newTaskWithId);
-
-    this.localColumns.tasks.push(newId);
+    this.tasks.push(newTaskWithId);
     this.$emit("addTask", newTask);
- 
- 
-  this.closeModal();
+    this.closeModal();
+    
+    
   },
 
   allowDrop(event) {
@@ -127,7 +123,7 @@ methods: {
   closeModal() {
     this.isModalOpen = false;
     // Сбросить значения полей при закрытии модального окна
-    this.taskTitle = "";
+    this.taskName = "";
     this.taskDescription = "";
     this.taskDate = "";
   },
