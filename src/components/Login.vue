@@ -45,12 +45,12 @@ export default {
         },
       };
       
-      console.log(this.formData.email)
-      console.log(this.formData.password)
+     
       axios
       .post('/auth/signin', formData)
         .then((response) => {
           localStorage.setItem('token', response.data.token);
+          this.$store.dispatch('login', { email: this.formData.email, password: this.formData.password })
           // Другие действия после успешной авторизации
           this.$router.push('/home');
         })
@@ -60,6 +60,8 @@ export default {
     },
   },
 };
+
+
 </script>
   
 <style>

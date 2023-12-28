@@ -2,72 +2,45 @@ import { createStore } from "vuex";
 import axios from 'axios';
 export default createStore({
     state: {
-        count: 0,
-        statusses:[]
-        //tasks
+
+        isAuthenticated: false, // пока не авторизован
+        user: null // храним юзера и пароль
+
     },
     getters: {
-        squaredCount(state){
-            return state.count - 1;
-        }
+
     },
     mutations: {
-        getStatuses() {
-            axios
-                .get('boards/5/statuses')
-                .then((response) => {
-                    this.statuses = response.data
-                    // console.log('this.statuses');
-                })
-                .catch((error) => {
-                    this.errorMessage = 'Произошла ошибка:' + error.message;
-                });
+
+        //указываем что авторизованы
+        setAuthentication(state, isAuthenticated) {
+            state.isAuthenticated = isAuthenticated
         },
-    
-        decrement(state) {
-            state.count--;
+        //указываем что юзер добавлен
+        setUser(state, user) {
+            state.user = user
         },
 
+        deleteToken() {
+            localStorage.removeItem('token');
+            
+        }
     },
 
     actions: {
-        getStatuses: ({ commit }) => commit('getStatuses'),
-        decrement: ({ commit }) => commit('decrement'),
+
+        
+        login({ commit }, credentials) {
+            commit('setAuthentication', true)
+            commit('setUser', credentials)
+        },
+
+        logout({ commit }) {
+            commit('setAuthentication', false)
+            commit('setUser', null)
+            commit('deleteToken')
+            
+        }
     },
 });
-
-
-
-// const state = {
-//     statuses: [],
-//     errorMessage: '',
-//   };
-  
-//   const mutations = {
-//     SET_STATUSES(state, statuses) {
-//       state.statuses = statuses;
-//     },
-//     SET_ERROR_MESSAGE(state, errorMessage) {
-//       state.errorMessage = errorMessage;
-//     },
-//   };
-  
-//   const actions = {
-//     async getStatuses({ commit }) {
-//       try {
-//         const response = await axios.get('boards/5/statuses');
-//         commit('SET_STATUSES', response.data);
-//         commit('SET_ERROR_MESSAGE', null); // Сбрасываем ошибку, если запрос выполнен успешно
-//       } catch (error) {
-//         commit('SET_STATUSES', []); // Очищаем статусы при ошибке, если это нужно
-//         commit('SET_ERROR_MESSAGE', 'Произошла ошибка: ' + error.message);
-//       }
-//     },
-//   };
-  
-//   export default {
-//     state,
-//     mutations,
-//     actions,
-//   };
 

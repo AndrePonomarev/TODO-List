@@ -12,11 +12,13 @@
       </div>
       <div class="form-group">
         <label for="password">Пароль:</label>
-        <input class="form-group-input" v-model="formData.password" type="password" id="password" name="password" required>
+        <input class="form-group-input" v-model="formData.password" type="password" id="password" name="password"
+          required>
       </div>
       <div class="form-group">
         <label for="confirmPassword">Подтвердите пароль:</label>
-        <input class="form-group-input" v-model="formData.confirmPassword" type="password" id="confirmPassword" name="confirmPassword" required>
+        <input class="form-group-input" v-model="formData.confirmPassword" type="password" id="confirmPassword"
+          name="confirmPassword" required>
       </div>
       <div class="checkbox">
         <input type="checkbox" id="agreeTerms" v-model="formData.agreeTerms" required>
@@ -27,9 +29,14 @@
       </div>
     </form>
   </div>
+  <!-- Отображение сообщений об успехе или ошибке -->
+  <div v-if="successMessage" class="success-message">{{ successMessage }}</div>
+  <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
 </template>
 
 <script>
+import axios from '../utils/axios';
+
 export default {
   data() {
     return {
@@ -40,6 +47,8 @@ export default {
         confirmPassword: '',
         agreeTerms: false,
       },
+      successMessage: '', // Добавлено состояние для отображения сообщения об успехе
+      errorMessage: '',
     };
   },
   methods: {
@@ -51,42 +60,33 @@ export default {
 
       if (this.formData.password !== this.formData.confirmPassword) {
         // Вывести сообщение об ошибке, если пароли не совпадают
+        alert('Пароли не сопадают!')
         return;
       }
 
-      const formData = {
+  
+      axios.put('/auth/signup', {
         formData: {
           name: this.formData.name,
           email: this.formData.email,
           password: this.formData.password,
           confirm_password: this.formData.confirmPassword,
         },
-      };
-
-      fetch('https://a430f081804b.vps.myjino.ru/api/v1/auth/signup', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
       })
-        .then(response => {
-          // Проверка, успешен ли запрос (статус 200-299)
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
 
-          // Преобразование ответа в формат JSON
-          return response.json();
-        })
         .then(data => {
-          // Обработка данных из ответа
-          localStorage.setItem('token', data.token);
+          
           // Можно добавить дополнительные действия после успешной регистрации
-          this.$router.push('/login');
+          this.successMessage = 'Регистрация успешна! Перенаправляю на страницу авторизации...';
+          // Задержка в 2 секунды перед перенаправлением
+          
+          setTimeout(() => {
+            this.$router.push('/login');
+          }, 2000);
         })
         .catch(error => {
           // Обработка ошибок
+          this.errorMessage = 'Произошла ошибка во время регистрации.';
           console.error('Error during registration:', error);
         });
     },

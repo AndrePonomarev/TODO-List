@@ -1,12 +1,12 @@
 <!-- TheColumn.vue -->
 <template>
-  <section class="kanban__column" :data-column-id="column.id"
-  @dragover.prevent="allowDrop"
+  <section class="kanban__column" 
+    :data-column-id="column.id"
+    @dragover.prevent="allowDrop"
     @dragenter.prevent="highlightDropArea"
     @dragleave.prevent="unhighlightDropArea"
     @drop="handleDrop"
-    >
-    
+  >
     <div class="kanban__title-main">
       <h2 class="kanban__title">
         <img :src="column.icon" style="width: 20px;" />{{ column.name }}
@@ -17,58 +17,53 @@
       <TheTask
         v-for="task in tasks"
         :key="task.id"
-        :taskId="task.id"
+        :task="task"
         @openEditTaskModal="openEditTaskModal"
-        :task="getTaskById(task.id)"
+        @dragstart="startDragColumn"
+        @dragend="endDragColumn"
       />
     </div>
 
-    <!-- Модальное окно -->
-    <div class="modal" :class="{ 'modal--active': isModalOpen }">
-      <div class="modal__container">
-        <a href="#" class="close-modal" @click="closeModal">✖</a>
-        <form @submit.prevent="addTask">
-          <input type="text" v-model="taskName" id="title-task" name="title" placeholder="Введите заголовок задачи" />
-          <textarea v-model="taskDescription" id="description-task" name="description" placeholder="Введите описание задачи"></textarea>
-          <input type="date" v-model="taskDate" name="date" placeholder="Выберите дату" />
-          <button type="submit">Отправить</button>
-          <button type="button" class="cancel-button" @click="closeModal">Отмена</button>
-        </form>
-      </div>
-    </div>
-    
+    <!-- Используйте новый компонент Modal.vue для модального окна -->
+    <Modal :is-open="isModalOpen" :close-modal="closeModal">
+      <form @submit.prevent="addTask">
+        <input type="text" v-model="taskName" id="title-task" name="title" placeholder="Введите заголовок задачи" />
+        <textarea v-model="taskDescription" id="description-task" name="description" placeholder="Введите описание задачи"></textarea>
+        <input type="date" v-model="taskDate" name="date" placeholder="Выберите дату" />
+        <button type="submit">Отправить</button>
+        <button type="button" class="cancel-button" @click="closeModal">Отмена</button>
+      </form>
+    </Modal>
   </section>
 </template>
 
 <script>
 import TheTask from "./TheTask.vue";
+import Modal from "./TheModal.vue"; // Импортируйте новый компонент
 
 export default {
-props: {
-  column: {
-    type: Object,
-    default: {},
+  props: {
+    column: {
+      type: Object,
+      default: {},
+    },
+    tasks: {
+      type: Array,
+      default: {},
+    },
   },
-  tasks: {
-    type: Array,
-    default: {},
+  components: {
+    TheTask,
+    Modal, // Зарегистрируйте компонент Modal
   },
- // tasks: Array,
-},
-components: {
-  TheTask,
-
-},
-data() {
-  return {
-    isModalOpen: false,
-    taskName: "",
-    taskDescription: "",
-    taskDate: "",
-    // localTask: this.tasks,
-    // localColumns: this.column,
-  };
-},
+  data() {
+    return {
+      isModalOpen: false,
+      taskName: "",
+      taskDescription: "",
+      taskDate: "",
+    };
+  },
 methods: {
   openAddTaskModal() {
     this.isModalOpen = true;
@@ -106,11 +101,15 @@ methods: {
       event.preventDefault();
     },
     handleDrop(event) {
-    event.preventDefault();
-    const taskId = event.dataTransfer.getData('text/plain');
-    this.$emit('task-dropped', Number(taskId), this.column.id);
-  },
-    
+      event.preventDefault();
+      const taskId = event.dataTransfer.getData("text/plain");
+
+      // Удаляем задачу из текущей колонки
+      this.$emit("remove-task-from-column", Number(taskId), this.column.id);
+
+      // Оповещаем родительский компонент о том, что задача была перетащена в эту колонку
+      this.$emit("task-dropped", Number(taskId), this.column.id);
+    },
     
     highlightDropArea(event) {
       event.target.classList.add('highlighted-drop-area');
@@ -118,6 +117,13 @@ methods: {
     unhighlightDropArea(event) {
       event.target.classList.remove('highlighted-drop-area');
     },
+    startDragColumn(event) {
+    // Ваш код для обработки dragstart в компоненте TheColumn
+  },
+
+  endDragColumn(event) {
+    // Ваш код для обработки dragend в компоненте TheColumn
+  },
 
 
   closeModal() {

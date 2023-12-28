@@ -34,8 +34,13 @@
        
       },
       startDrag(event) {
-    event.dataTransfer.setData('text/plain', this.task.id);
-  },
+      event.dataTransfer.setData("text/plain", this.task.id);
+      // Прокидываем информацию о колонке, откуда происходит перетаскивание
+      this.$emit("start-drag", this.task.columnId);
+    },
+    endDrag(event) {
+      this.$emit("dragend", event); // Передача события в родительский компонент
+    },
     },
   };
   </script>

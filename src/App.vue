@@ -24,14 +24,6 @@ import {mapGetters, mapActions, mapMutations} from 'vuex'
 
 export default {
  
-  computed: {
-    ...mapGetters([
-      'squaredCount'
-    ]),
-    count() {
-      return this.$store.state.statuses;
-    }
-  },
 
   components: {
 
@@ -56,20 +48,6 @@ export default {
   },
   //================================================================
   methods: {
-
-    ...mapActions ([
-       'getStatuses',
-      'decrement'
-    ]),
-    ...mapMutations([
-      'reset'
-    ]),
-
-    handle(){
-      this.getStatuses()
-    },
-
-
 
     registration() {
       console.log('login');
@@ -136,22 +114,22 @@ export default {
     // },
 
 
-    getTasks() {
-      axios
-        .get('boards/5/tasks')
-        .then((response) => {
-          this.tasks = response.data
-          for (let tasks of response.data){
-            //console.log(tasks.tasks)
-            for (let task of tasks.tasks){
-              this.tasks.push(task)
-            }
-          }
-        })
-        .catch((error) => {
-          this.errorMessage = 'Произошла ошибка:' + error.message;
-        });
-    },
+    // getTasks() {
+    //   axios
+    //     .get('boards/5/tasks')
+    //     .then((response) => {
+    //       this.tasks = response.data
+    //       for (let tasks of response.data){
+    //         //console.log(tasks.tasks)
+    //         for (let task of tasks.tasks){
+    //           this.tasks.push(task)
+    //         }
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       this.errorMessage = 'Произошла ошибка:' + error.message;
+    //     });
+    // },
 
 
     //================================================================
@@ -177,39 +155,7 @@ export default {
     },
 
 
-    handleTaskDropped(taskId, targetColumnId) {
-      // Находим текущий columnId задачи
-      const currentTask = this.localTasks.find(task => task.id === taskId);
-      console.log(currentTask)
-      if (!currentTask || currentTask.columnId === targetColumnId) {
-        // Если задача уже в этой колонке или не найдена, ничего не делаем
-        return;
-      }
-
-      // Обновляем localTasks
-      const updatedTasks = this.localTasks.map(task => {
-        if (task.id === taskId) {
-          return { ...task, columnId: targetColumnId };
-        }
-        return task;
-      });
-      this.localTasks = updatedTasks;
-
-
-
-      this.localcolumns = this.localcolumns.map(column => {
-        if (column.id === targetColumnId) {
-          // Добавляем задачу, если её там ещё нет
-          if (!column.tasks.includes(taskId)) {
-            return { ...column, tasks: [...column.tasks, taskId] };
-          }
-        } else {
-          // Удаляем задачу из текущей колонки
-          return { ...column, tasks: column.tasks.filter(id => id !== taskId) };
-        }
-        return column;
-      });
-    },
+   
   },
 
   //================================================================
@@ -221,7 +167,7 @@ export default {
     //await this.login();
    // await this.getStatuses();
     
-    await this.getTasks();
+   // await this.getTasks();
     
   },
 };
