@@ -8,7 +8,7 @@
         <h3 class="task-item_title"> {{ task.name }} </h3>
         <p class="task-item_description">{{ task.description }}</p>
         
-        <span class="task-item__datetime">{{ task.dueDate }}</span>
+        <span class="task-item__datetime">{{ task.plannedCompletionAt }}</span>
         <button class="edit-task-button">
         <img src="../../../src/assets/img/edit-icon.png" alt="Edit">
     </button>

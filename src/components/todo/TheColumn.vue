@@ -78,24 +78,32 @@ methods: {
   
   addTask() {
     const newTask = {
+      formData: {
+      statusId: this.column.id,
       name: this.taskName,
       description: this.taskDescription,
-      dueDate: this.taskDate,
-      columnId: this.column.id,
+      plannedCompletionAt: this.taskDate,
+      
+    }  
     };
-    
 
+    
     const newId = this.tasks.length + 1;
     const newTaskWithId = {
-      ...newTask,
+      ...newTask.formData,
       id: newId,
     };
     this.tasks.push(newTaskWithId);
+
     this.$emit("addTask", newTask);
+
+    // Используйте новый метод для добавления задачи через API
+    this.$parent.addTaskViaApi(newTask);
+    
+
     this.closeModal();
-    
-    
   },
+
 
   allowDrop(event) {
       event.preventDefault();

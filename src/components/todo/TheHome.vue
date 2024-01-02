@@ -63,6 +63,19 @@ export default {
 
     methods: {
 
+        addTaskViaApi(newTask) {
+    axios
+      .post('boards/5/tasks', newTask)
+      .then((response) => {
+        // Обработка успешного ответа, если необходимо
+        console.log('Task added successfully:', response.data);
+      })
+      .catch((error) => {
+        // Обработка ошибок
+        console.error('Error adding task:', error.message);
+      });
+  },
+
         logout() {
             this.$store.dispatch('logout')
                 .then(() => {
