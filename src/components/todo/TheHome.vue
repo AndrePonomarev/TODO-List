@@ -27,17 +27,18 @@ import axios from '../../utils/axios'
 import Login from '../Login.vue'
 import { mapActions } from 'vuex';
 import { RouterLink } from 'vue-router'
+import { format } from 'date-fns';
 
 export default {
     components: {
-    TheHeader,
-    TheFooter,
-    //  TheModal,
-    TheColumn,
-    Login,
-    axios,
-    RouterLink
-},
+        TheHeader,
+        TheFooter,
+        //  TheModal,
+        TheColumn,
+        Login,
+        axios,
+        RouterLink
+    },
     data() {
         return {
             //localcolumns: columns,
@@ -64,17 +65,17 @@ export default {
     methods: {
 
         addTaskViaApi(newTask) {
-    axios
-      .post('boards/5/tasks', newTask)
-      .then((response) => {
-        // Обработка успешного ответа, если необходимо
-        console.log('Task added successfully:', response.data);
-      })
-      .catch((error) => {
-        // Обработка ошибок
-        console.error('Error adding task:', error.message);
-      });
-  },
+            axios
+                .post('boards/5/tasks', newTask)
+                .then((response) => {
+                    // Обработка успешного ответа, если необходимо
+                    console.log('Task added successfully:', response.data);
+                })
+                .catch((error) => {
+                    // Обработка ошибок
+                    console.error('Error adding task:', error.message);
+                });
+        },
 
         logout() {
             this.$store.dispatch('logout')
@@ -84,7 +85,7 @@ export default {
 
         },
 
-        
+
         getTasksByColumnId(columnId) {
             return (this.tasks.filter(task => task.statusId === columnId));
 
@@ -109,6 +110,8 @@ export default {
                     for (let tasks of response.data) {
                         //console.log(tasks.tasks)
                         for (let task of tasks.tasks) {
+
+                            task.plannedCompletionAt = format(new Date(task.plannedCompletionAt), 'yyyy-MM-dd');
                             this.tasks.push(task)
                         }
                     }
