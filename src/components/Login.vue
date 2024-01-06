@@ -52,7 +52,7 @@ export default {
           localStorage.setItem('token', response.data.token);
           this.$store.dispatch('login', { email: this.formData.email, password: this.formData.password })
           // Другие действия после успешной авторизации
-          this.$router.push('/home');
+          this.$router.push('/board');
         })
         .catch((error) => {
           this.errorMessage = 'Произошла ошибка: ' + error.message;

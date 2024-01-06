@@ -1,12 +1,12 @@
-<!-- App.vue -->
+<!-- TheBoard.vue -->
 <template>
     <div>
         <div class="main-text">
             <h1>Доски пользователя</h1>
-            <button @click="openModal" class="create-btn">Создать доску</button>
+            <button @click="openCreateModal" class="create-btn">Создать доску</button>
         </div>
         <!-- Модальное окно -->
-        <div v-if="showModal" class="modal">
+        <div v-if="createModalVisible" class="modal">
             <div class="modal-content">
                 <h2>Новая доска</h2>
                 <label for="boardName">Имя доски:</label>
@@ -14,17 +14,29 @@
                 <label for="boardDescription">Описание доски:</label>
                 <textarea v-model="newBoard.description" id="boardDescription" required></textarea>
                 <button class="addbtn" @click="addBoard">Добавить</button>
-                <button class="dltbtn" @click="closeModal">Отмена</button>
+                <button class="dltbtn" @click="closeCreateModal">Отмена</button>
+            </div>
+        </div>
+        <!-- Модальное окно редактирования доски -->
+        <div v-if="editModalVisible" class="modal">
+            <div class="modal-content">
+                <h2>Редактировать доску</h2>
+                <label for="editBoardName">Новое имя:</label>
+                <input v-model="editedBoard.name" type="text" id="editBoardName" required>
+                <label for="editBoardDescription">Новое описание:</label>
+                <textarea v-model="editedBoard.description" id="editBoardDescription" required></textarea>
+                <button class="addbtn" @click="updateBoard">Сохранить</button>
+                <button class="dltbtn" @click="closeEditModal">Отмена</button>
             </div>
         </div>
         <div v-if="boards.length > 0">
             <div v-for="board in boards" :key="board.id" class="board-container">
                 <div class="board-info">
-                    <h2>{{ board.name }}</h2>
+                    <h2 @click="redirectToHome">{{ board.name }}</h2>
                     <p>{{ board.description }}</p>
                 </div>
                 <div class="board-actions">
-                    <button @click="editBoard(board.id)" class="edit-btn">Изменить</button>
+                    <button @click="openEditModal(board.id)" class="edit-btn">Изменить</button>
                     <button @click="deleteBoard(board.id)" class="delete-btn">Удалить</button>
                 </div>
             </div>
@@ -41,34 +53,60 @@ import axios from '../../utils/axios'
 export default {
     data() {
         return {
-            showModal: false,
+            createModalVisible: false,
+            editModalVisible: false,
             newBoard: {
                 name: "",
                 description: ""
             },
+            editedBoard: {
+
+                name: "",
+                description: ""
+            },
             boards: [], // массив для хранения досок пользователя
+            currentBoardId: null,
         };
     },
     mounted() {
         this.fetchBoards(); // при монтировании компонента получаем доски пользователя
     },
     methods: {
-        openModal() {
-            this.showModal = true;
+        openCreateModal() {
+            this.createModalVisible = true;
         },
-        closeModal() {
-            this.showModal = false;
+        closeCreateModal() {
+            this.createModalVisible = false;
         },
+
+        openEditModal(boardId) {
+            // Сохраняем id текущей доски перед открытием модального окна редактирования
+            this.editedBoardId = boardId;
+            this.editModalVisible = true;
+            console.log(this.editedBoardId)
+        },
+        closeEditModal() {
+            this.editModalVisible = false;
+        },
+
+        redirectToHome() {
+            this.$router.push('/home');
+        },
+
         fetchBoards() {
             // Запрос на сервер для получения досок пользователя
             const userId = 7; // замените на реальный идентификатор пользователя
             axios.get(`user/${userId}/boards`)
                 .then(response => {
+
                     this.boards = response.data; // сохраняем полученные доски в массив
+                    // console.log(this.boards)
                 })
                 .catch(error => {
                     console.error('Ошибка при получении досок', error);
                 });
+
+
         },
         addBoard() {
             // Здесь можете добавить логику для отправки новой доски на сервер
@@ -78,32 +116,60 @@ export default {
                     description: this.newBoard.description,
                 }
             }
-            console.log(nBoard)
-             
+            //console.log(nBoard)
+
             const userId = 7; // замените на реальный идентификатор пользователя
             axios.post(`user/${userId}/boards`, nBoard)
                 .then(response => {
                     // Обработка успешного создания доски
                     console.log('Новая доска успешно создана:', response.data);
                     // Закрытие модального окна после успешного создания
-                    this.closeModal();
+                    this.closeCreateModal();
                     // Перезагрузка списка досок
                     this.fetchBoards();
+                    // Очистка данных новой доски
+                    this.newBoard = {
+                        name: "",
+                        description: ""
+                    };
                 })
                 .catch(error => {
                     console.error('Ошибка при создании доски', error);
                 });
         },
-        editBoard(boardId) {
-            // Здесь можете добавить логику для редактирования доски
-            console.log(`Редактирование доски с ID ${boardId}`);
+        updateBoard() {
+            const eBoard = {
+                formData: {
+                    name: this.editedBoard.name,
+                    description: this.editedBoard.description,
+                }
+            }
+            console.log(this.editedBoardId)
+            const userId = 7; // замените на реальный идентификатор пользователя
+            const boardId = this.editedBoardId;
+            axios.put(`user/${userId}/boards/${boardId}`, eBoard)
+                .then(response => {
+                    // Обработка успешного редактирования доски
+                    // обновить список досок после успешного редактирования
+                    this.fetchBoards();
+
+                    // Закрытие модального окна после успешного редактирования
+                    this.closeEditModal();
+                    this.editedBoard = {
+                        name: "",
+                        description: ""
+                    };
+                })
+                .catch(error => {
+                    console.error('Ошибка при редактировании доски', error);
+                });
         },
         deleteBoard(boardId) {
-            // Здесь можете добавить логику для удаления доски
-            
             axios.delete(`user/7/boards/${boardId}`)
-            console.log(`Удаление доски с ID ${boardId}`);
-            this.fetchBoards();
+                .then(response => {
+                    console.log(`Удаление доски с ID ${boardId}`);
+                    this.fetchBoards();
+                })
         },
     },
 };
