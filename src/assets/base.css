@@ -116,6 +116,20 @@ footer {
   background-color: rgb(221, 192, 255);
   font-size: 30px;
 }
+.kanban__plus:hover {
+  color: green;
+}
+.kanban__del {
+  background-color: rgb(221, 192, 255);
+  border: none;
+  margin: 0px 5px 10px 5px;
+  font-size: 30px;
+  margin-left: auto; /* Смещение вправо */
+  cursor: pointer;
+}
+.kanban__del:hover {
+  color: red;
+}
 
 .kanban__title-main {
   display: flex;

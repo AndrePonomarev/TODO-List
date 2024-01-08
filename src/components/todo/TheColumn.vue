@@ -6,7 +6,9 @@
       <h2 class="kanban__title">
         <img :src="column.icon" style="width: 20px;" />{{ column.name }}
       </h2>
+      <button class="kanban__del" @click="deleteColumn">-</button>
       <button class="kanban__plus" @click="openAddTaskModal">+</button>
+
     </div>
     <div class="kanban__list">
       <TheTask v-for="task in tasks" :key="task.id" :task="task" @open-edit-task-modal="openEditTaskModal"
@@ -106,11 +108,11 @@ export default {
         .put(`boards/${this.boardId}/tasks/${this.editedTask.id}`, updatedTask)
         .then((response) => {
           // Обработка успешного ответа, если необходимо
-           const g = this.getTaskById(updateId)
-                    
-           g.name= this.taskName
-           g.description = this.taskDescription
-           g.plannedCompletionAt = this.taskDate
+          const g = this.getTaskById(updateId)
+
+          g.name = this.taskName
+          g.description = this.taskDescription
+          g.plannedCompletionAt = this.taskDate
 
           console.log('Task updated successfully:', response.data);
           this.closeEditTaskModal();
@@ -120,9 +122,9 @@ export default {
           console.error('Error updating task:', error.message);
         });
 
-      
 
-      
+
+
     },
 
 
@@ -150,7 +152,7 @@ export default {
           plannedCompletionAt: this.taskDate,
 
         }
-        
+
       };
 
 
@@ -168,6 +170,19 @@ export default {
 
 
       this.closeModal();
+    },
+    deleteColumn() {
+      if (confirm('Вы уверены, что хотите удалить этот статус?')) {
+        axios
+          .delete(`boards/${this.boardId}/statuses/${this.column.id}`)
+          .then(() => {
+            // Удаление успешно, обновите статусы
+            this.$parent.getStatuses();
+          })
+          .catch((error) => {
+            console.error('Error deleting column:', error.message);
+          });
+      }
     },
 
 

@@ -1,5 +1,6 @@
 <template>
     <TheHeader />
+    <button class="backboards" @click="backToBoards">Назад к доскам</button>
     <button class="addstat" @click="openModal">Добавить статус </button>
     <div class="welcomtxt" v-if="isAuthenticated">
         <p>Welcome, {{ user.email }}! <button class="logoutbtn" @click="logout">Logout</button></p>
@@ -170,6 +171,10 @@ export default {
                 });
         },
 
+        backToBoards() {
+            this.$router.push('/board');
+        },
+
         handleTaskDropped(taskId, targetColumnId) {
             console.log('All tasks:', this.tasks);
 
@@ -223,6 +228,7 @@ export default {
 
 <style>
 
+
 .addstat {
     
     background-color: rgb(44, 0, 97);
@@ -237,7 +243,7 @@ export default {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-80%, -1025%);
+    transform: translate(75%, -1025%);
     @media (max-width: 1000px) {
         display: none;
       }
@@ -260,4 +266,30 @@ export default {
     border-radius: 2px;
     cursor: pointer;
   }
+
+  .backboards {
+    
+    
+        background-color: rgb(44, 0, 97);
+        color: white;
+        border: none;
+        width: 120px;
+        height: 40px; /* высота кнопки */
+        border-radius: 5px;
+        cursor: pointer;
+        
+        /* Выравнивание по центру */
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -1025%);
+        @media (max-width: 1000px) {
+            display: none;
+          }
+      }
+      .backboards:hover{
+        background-color: green;
+      }
+
+ 
 </style>
