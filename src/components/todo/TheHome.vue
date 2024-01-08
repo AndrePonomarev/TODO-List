@@ -1,19 +1,34 @@
 <template>
     <TheHeader />
-
-    <div v-if="isAuthenticated">
-        <p>Welcome, {{ user.email }}!</p>
-        <button @click="logout">Logout</button>
+    <button class="addstat" @click="openModal">Добавить статус </button>
+    <div class="welcomtxt" v-if="isAuthenticated">
+        <p>Welcome, {{ user.email }}! <button class="logoutbtn" @click="logout">Logout</button></p>
+        
     </div>
     <div v-else>
         <router-link :to="this.$router.push('/login')"><strong>Go to Redirect Page</strong></router-link>
     </div>
 
     <div class="kanban">
-        <TheColumn v-for="column in statuses" :key="column.id" :boardId="id" :column="column" :tasks="getTasksByColumnId(column.id)"
-            @task-dropped="handleTaskDropped" />
+        <TheColumn v-for="column in statuses" :key="column.id" :boardId="id" :column="column"
+            :tasks="getTasksByColumnId(column.id)" @task-dropped="handleTaskDropped" />
     </div>
     <TheFooter />
+
+    <!-- Добавляем модальное окно -->
+    <div v-if="isModalOpen" class="modal">
+        <div class="modal-content">
+
+            <input class="inptname" v-model="name" placeholder="Название">
+
+            <div class="modal-buttons">
+                <button @click="saveNewStatus">Сохранить</button>
+                <button @click="closeModal">Отмена</button>
+            </div>
+        </div>
+    </div>
+
+    
 
     <RouterView />
 </template>
@@ -33,7 +48,6 @@ export default {
     components: {
         TheHeader,
         TheFooter,
-        //  TheModal,
         TheColumn,
         Login,
         axios,
@@ -41,14 +55,14 @@ export default {
     },
     data() {
         return {
-            //localcolumns: columns,
-            //localTasks: tasks,
-            //   isModalOpen: false,
-            //   currentColumnId: null,
+           
             auth: '/login',
             statuses: [],
-            //boards: [],
+           
             tasks: [],
+
+            isModalOpen: false,
+            name: '',
         };
     },
     computed: {
@@ -71,6 +85,7 @@ export default {
                 .then((response) => {
                     // Обработка успешного ответа, если необходимо
                     console.log('Task added successfully:', response.data);
+                    this.getTasks();
                 })
                 .catch((error) => {
                     // Обработка ошибок
@@ -121,6 +136,40 @@ export default {
                     this.errorMessage = 'Произошла ошибка:' + error.message;
                 });
         },
+
+        openModal() {
+            this.isModalOpen = true;
+            console.log(this.id)
+        },
+        closeModal() {
+            this.isModalOpen = false;
+            this.name = '';
+
+        },
+        saveNewStatus() {
+            
+            console.log('Сохранение нового статуса:', this.name);
+            const newStat = {
+                formData: {
+                    name: this.name,
+
+                }
+            }
+            console.log(newStat);
+
+            //axios.post(`boards/${board_id}/statuses`, this.newStatus)
+            axios.post(`boards/${this.id}/statuses`, newStat)
+                .then(response => {
+                    console.log('Успешно сохранено:', response.data);
+                    this.isModalOpen = false; // Закрываем модальное окно
+                    this.getStatuses();
+                    //this.$emit('status-added'); // Вызываем событие для обновления статусов в TheHome.vue
+                })
+                .catch(error => {
+                    console.error('Ошибка сохранения:', error.message);
+                });
+        },
+
         handleTaskDropped(taskId, targetColumnId) {
             console.log('All tasks:', this.tasks);
 
@@ -172,4 +221,43 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+
+.addstat {
+    
+    background-color: rgb(44, 0, 97);
+    color: white;
+    border: none;
+    width: 120px;
+    height: 40px; /* высота кнопки */
+    border-radius: 5px;
+    cursor: pointer;
+    
+    /* Выравнивание по центру */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-80%, -1025%);
+    @media (max-width: 1000px) {
+        display: none;
+      }
+  }
+  .addstat:hover{
+    background-color: green;
+  }
+  .welcomtxt {
+    margin-left: 50px;
+    padding: 5px;
+    @media (max-width: 400px) {
+        display: none;
+      }
+  }
+  .logoutbtn {
+    padding: 3px;
+    margin: 10px;
+    background-color:rgb(221, 192, 255);
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+  }
+</style>
