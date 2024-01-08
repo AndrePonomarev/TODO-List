@@ -10,9 +10,10 @@ import TheBoard from '../components/todo/TheBoard.vue'
   history: createWebHistory (''),
   routes: [
     {
-      path: '/home',
+      path: '/home/:id',
       name: 'home',
-      component: TheHome
+      component: TheHome,
+      props: true // передача параметров в компонент через props
     },
     {
       path: '/register',

@@ -32,7 +32,7 @@
         <div v-if="boards.length > 0">
             <div v-for="board in boards" :key="board.id" class="board-container">
                 <div class="board-info">
-                    <h2 @click="redirectToHome">{{ board.name }}</h2>
+                    <h2 @click="redirectToHome(board.id)">{{ board.name }}</h2>
                     <p>{{ board.description }}</p>
                 </div>
                 <div class="board-actions">
@@ -66,6 +66,7 @@ export default {
             },
             boards: [], // массив для хранения досок пользователя
             currentBoardId: null,
+            userId: localStorage.getItem('userId'),
         };
     },
     mounted() {
@@ -89,14 +90,14 @@ export default {
             this.editModalVisible = false;
         },
 
-        redirectToHome() {
-            this.$router.push('/home');
+        redirectToHome(boardId) {
+            this.$router.push(`/home/${boardId}`);
         },
 
         fetchBoards() {
             // Запрос на сервер для получения досок пользователя
-            const userId = 7; // замените на реальный идентификатор пользователя
-            axios.get(`user/${userId}/boards`)
+    
+            axios.get(`user/${this.userId}/boards`)
                 .then(response => {
 
                     this.boards = response.data; // сохраняем полученные доски в массив
@@ -118,8 +119,8 @@ export default {
             }
             //console.log(nBoard)
 
-            const userId = 7; // замените на реальный идентификатор пользователя
-            axios.post(`user/${userId}/boards`, nBoard)
+          
+            axios.post(`user/${this.userId}/boards`, nBoard)
                 .then(response => {
                     // Обработка успешного создания доски
                     console.log('Новая доска успешно создана:', response.data);
@@ -145,9 +146,9 @@ export default {
                 }
             }
             console.log(this.editedBoardId)
-            const userId = 7; // замените на реальный идентификатор пользователя
+           
             const boardId = this.editedBoardId;
-            axios.put(`user/${userId}/boards/${boardId}`, eBoard)
+            axios.put(`user/${this.userId}/boards/${boardId}`, eBoard)
                 .then(response => {
                     // Обработка успешного редактирования доски
                     // обновить список досок после успешного редактирования
@@ -165,7 +166,7 @@ export default {
                 });
         },
         deleteBoard(boardId) {
-            axios.delete(`user/7/boards/${boardId}`)
+            axios.delete(`user/${this.userId}/boards/${boardId}`)
                 .then(response => {
                     console.log(`Удаление доски с ID ${boardId}`);
                     this.fetchBoards();

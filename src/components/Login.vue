@@ -50,6 +50,8 @@ export default {
       .post('/auth/signin', formData)
         .then((response) => {
           localStorage.setItem('token', response.data.token);
+          localStorage.setItem('userId', response.data.userId);
+          
           this.$store.dispatch('login', { email: this.formData.email, password: this.formData.password })
           // Другие действия после успешной авторизации
           this.$router.push('/board');

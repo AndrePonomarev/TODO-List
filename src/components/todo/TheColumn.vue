@@ -56,7 +56,7 @@ export default {
       type: Array,
       default: {},
     },
-    //isModalOpenEdit: Boolean,
+    boardId: String
   },
   components: {
     TheTask,
@@ -103,7 +103,7 @@ export default {
       //console.log(this.editedTask)
       const updateId = this.editedTask.id;
       axios
-        .put(`boards/5/tasks/${this.editedTask.id}`, updatedTask)
+        .put(`boards/${this.boardId}/tasks/${this.editedTask.id}`, updatedTask)
         .then((response) => {
           // Обработка успешного ответа, если необходимо
            const g = this.getTaskById(updateId)

@@ -10,7 +10,7 @@
     </div>
 
     <div class="kanban">
-        <TheColumn v-for="column in statuses" :key="column.id" :column="column" :tasks="getTasksByColumnId(column.id)"
+        <TheColumn v-for="column in statuses" :key="column.id" :boardId="id" :column="column" :tasks="getTasksByColumnId(column.id)"
             @task-dropped="handleTaskDropped" />
     </div>
     <TheFooter />
@@ -60,13 +60,14 @@ export default {
         }
     },
 
+    props: ['id'], // Принимаем значение ID через props
 
 
     methods: {
 
         addTaskViaApi(newTask) {
             axios
-                .post('boards/5/tasks', newTask)
+                .post(`boards/${this.id}/tasks`, newTask)
                 .then((response) => {
                     // Обработка успешного ответа, если необходимо
                     console.log('Task added successfully:', response.data);
@@ -93,7 +94,7 @@ export default {
         ...mapActions(['getStatuses']),
         getStatuses() {
             axios
-                .get('boards/5/statuses')
+                .get(`boards/${this.id}/statuses`)
                 .then((response) => {
                     this.statuses = response.data
                     // console.log(this.statuses);
@@ -104,7 +105,7 @@ export default {
         },
         getTasks() {
             axios
-                .get('boards/5/tasks')
+                .get(`boards/${this.id}/tasks`)
                 .then((response) => {
                     this.tasks = response.data
                     for (let tasks of response.data) {
