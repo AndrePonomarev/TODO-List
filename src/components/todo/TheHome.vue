@@ -1,13 +1,17 @@
 <template>
     <TheHeader />
-    <button class="backboards" @click="backToBoards">Назад к доскам</button>
-    <button class="addstat" @click="openModal">Добавить статус </button>
+    
+    
     <div class="welcomtxt" v-if="isAuthenticated">
         <p>Welcome, {{ user.email }}! <button class="logoutbtn" @click="logout">Logout</button></p>
         
     </div>
     <div v-else>
         <router-link :to="this.$router.push('/login')"><strong>Go to Redirect Page</strong></router-link>
+    </div>
+    <div class="divbutns">
+    <button class="addstat" @click="openModal">Добавить статус </button>
+    <button class="backboards" @click="backToBoards">Назад к доскам</button>
     </div>
 
     <div class="kanban">
@@ -228,68 +232,6 @@ export default {
 
 <style>
 
-
-.addstat {
-    
-    background-color: rgb(44, 0, 97);
-    color: white;
-    border: none;
-    width: 120px;
-    height: 40px; /* высота кнопки */
-    border-radius: 5px;
-    cursor: pointer;
-    
-    /* Выравнивание по центру */
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(75%, -1025%);
-    @media (max-width: 1000px) {
-        display: none;
-      }
-  }
-  .addstat:hover{
-    background-color: green;
-  }
-  .welcomtxt {
-    margin-left: 50px;
-    padding: 5px;
-    @media (max-width: 400px) {
-        display: none;
-      }
-  }
-  .logoutbtn {
-    padding: 3px;
-    margin: 10px;
-    background-color:rgb(221, 192, 255);
-    border: none;
-    border-radius: 2px;
-    cursor: pointer;
-  }
-
-  .backboards {
-    
-    
-        background-color: rgb(44, 0, 97);
-        color: white;
-        border: none;
-        width: 120px;
-        height: 40px; /* высота кнопки */
-        border-radius: 5px;
-        cursor: pointer;
-        
-        /* Выравнивание по центру */
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -1025%);
-        @media (max-width: 1000px) {
-            display: none;
-          }
-      }
-      .backboards:hover{
-        background-color: green;
-      }
 
  
 </style>

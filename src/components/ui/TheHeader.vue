@@ -2,10 +2,16 @@
 <template>
   <header class="header">
     <p class="header__title">Kanban Board</p>
-    <button class="header__plus" @click="openModal">+ </button>
+    <!-- <button class="header__plus" @click="openModal">+ </button> -->
+    <nav>
+      <router-link class="lgnlink" to="/login">Login</router-link> 
+      <router-link class="reglink" to="/register">Register</router-link>
+    </nav>
+    
+    
 
     
-    <router-link to="/login" class="auth__button">А.А</router-link>
+    <!-- <router-link to="/login" class="auth__button">А.А</router-link> -->
 
   </header>
   <router-view />
@@ -98,5 +104,22 @@ header {
   border-radius: 4px;
   height: 25px;
   padding: 10px;
+}
+
+.lgnlink {
+  margin: 7px;
+  color: grey;
+}
+.lgnlink:hover {
+  color: white;
+}
+
+.reglink {
+  margin: 7px 14px;
+  color: grey;
+}
+
+.reglink:hover {
+  color: white;
 }
 </style>

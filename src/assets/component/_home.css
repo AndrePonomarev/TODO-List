@@ -1,0 +1,94 @@
+.divbutns {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.addstat {
+
+    background-color: rgb(44, 0, 97);
+    color: white;
+    border: none;
+    width: 120px;
+    height: 40px;
+    /* высота кнопки */
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 2px;
+
+    /* Выравнивание по центру */
+    /* position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(75%, -1025%); */
+
+    padding: 10px;
+    width: 135px;
+
+    @media (max-width: 1000px) {
+        display: none;
+    }
+}
+
+.addstat:hover {
+    background-color: green;
+}
+
+.welcomtxt {
+    margin-left: 50px;
+    padding: 5px;
+
+    @media (max-width: 400px) {
+        display: none;
+    }
+}
+
+.logoutbtn {
+    padding: 3px;
+    margin: 10px;
+    background-color: rgb(221, 192, 255);
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+}
+.logoutbtn:hover {
+    
+    background-color: green;
+   
+}
+
+.backboards {
+
+
+    background-color: rgb(44, 0, 97);
+    color: white;
+    border: none;
+    width: 120px;
+    height: 40px;
+    margin: 2px;
+    /* высота кнопки */
+    border-radius: 5px;
+    cursor: pointer;
+
+    /* Выравнивание по центру */
+    /* position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -1025%); */
+    @media (max-width: 1000px) {
+        display: none;
+    }
+}
+
+.backboards:hover {
+    background-color: green;
+}
+
+.welcomtxt {
+    display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  @media (max-width: 1000px) {
+    display: none;
+}
+}

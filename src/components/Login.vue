@@ -8,7 +8,8 @@
       </div>
       <div class="form-group">
         <label for="password">Password:</label>
-        <input class="form-group-input" v-model="formData.password" type="password" id="password" name="password" required>
+        <input class="form-group-input" v-model="formData.password" type="password" id="password" name="password"
+          required>
       </div>
       <div class="checkbox">
         <input type="checkbox" id="remember" v-model="formData.remember">
@@ -16,6 +17,9 @@
       </div>
       <div class="form-group">
         <button type="submit">Войти</button>
+      </div>
+      <div class="form-group">
+        <router-link class="no-acc-link" to="/register">Нет аккаунта</router-link>
       </div>
     </form>
   </div>
@@ -30,7 +34,7 @@ export default {
       formData: {
         email: '',
         password: '',
-        
+
       },
       errorMessage: '',
     };
@@ -44,14 +48,14 @@ export default {
           password: this.formData.password,
         },
       };
-      
-     
+
+
       axios
-      .post('/auth/signin', formData)
+        .post('/auth/signin', formData)
         .then((response) => {
           localStorage.setItem('token', response.data.token);
           localStorage.setItem('userId', response.data.userId);
-          
+
           this.$store.dispatch('login', { email: this.formData.email, password: this.formData.password })
           // Другие действия после успешной авторизации
           this.$router.push('/board');
@@ -149,6 +153,13 @@ input[type="checkbox"]:checked::before {
   content: "\2713";
   color: black;
   padding: 0px 0px 3px 3px;
+}
+
+.no-acc-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: grey;
 }
 </style>
   
