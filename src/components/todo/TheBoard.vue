@@ -44,7 +44,7 @@
         <div v-else>
             <p>У вас пока нет досок</p>
         </div>
-
+        <div @click="openRoleModal">⚙️</div>
     </div>
 </template>
   

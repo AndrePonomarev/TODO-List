@@ -1,12 +1,15 @@
 <!-- TheTask.vue -->
 <template>
   <div class="task-item" draggable="true" @dragstart="startDrag" @dragend="endDrag">
-    <h3 class="task-item_title"> {{ task.name }} </h3>
+    <h3 class="task-item_title"> {{ task.name }}
+      <button class="edit-task-button" @click="openEditTaskModal">
+      <img src="../../../src/assets/img/edit-icon.png" alt="Edit">
+    </button> </h3>
     <p class="task-item_description">{{ task.description }}</p>
 
     <span class="task-item__datetime">{{ task.plannedCompletionAt }}</span>
-    <button class="edit-task-button" @click="openEditTaskModal">
-      <img src="../../../src/assets/img/edit-icon.png" alt="Edit">
+    
+    <button class="delete-task-button" @click="deleteTask">❌
     </button>
   </div>
 
@@ -38,6 +41,10 @@ export default {
   },
 
   methods: {
+
+    deleteTask() {
+      this.$emit("delete-task", this.task.id);
+    },
    
 
     openEditTaskModal(taskId) {

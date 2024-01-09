@@ -12,7 +12,7 @@
     </div>
     <div class="kanban__list">
       <TheTask v-for="task in tasks" :key="task.id" :task="task" @open-edit-task-modal="openEditTaskModal"
-        @dragstart="startDragColumn" @dragend="endDragColumn" />
+        @dragstart="startDragColumn" @dragend="endDragColumn"  @delete-task="deleteTask"/>
     </div>
 
     <!-- Используйте новый компонент Modal.vue для модального окна -->
@@ -126,6 +126,25 @@ export default {
 
 
     },
+    deleteTask(taskId) {
+      if (confirm('Вы уверены, что хотите удалить эту задачу?')) {
+      axios
+        .delete(`boards/${this.boardId}/tasks/${taskId}`)
+        .then((response) => {
+          // Обработка успешного ответа, если необходимо
+          console.log('Task deleted successfully:', response.data);
+
+          // Удалить задачу из массива tasks
+          this.$parent.getTasks()
+          //this.tasks = this.tasks.filter(task => task.id !== taskId);
+        })
+        .catch((error) => {
+          // Обработка ошибок
+          console.error('Error deleting task:', error.message);
+        });
+      }
+    },
+  
 
 
 

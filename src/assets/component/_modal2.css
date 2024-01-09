@@ -27,8 +27,9 @@
     cursor: pointer;
     transition: background-color 0.3s;
     margin-left: 5px;
-    max-width: 100%;
+
 }
+
 
 .edit-task-button:hover {
     background-color: rgb(62, 150, 65) /* цвет при наведении */
@@ -36,4 +37,17 @@
 .edit-task-button img {
     width: 18px; /* устанавливает ширину картинки в 20 пикселей */
     height: 18px; /* устанавливает высоту картинки в 20 пикселей */
+}
+
+.delete-task-button {
+    margin-left: 5px;
+    max-width: 100%;
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+   
+}
+
+.delete-task-button:hover {
+    background-color: rgb(62, 150, 65)
 }

@@ -43,6 +43,7 @@ export default createStore({
       commit('deleteToken');
       // Удаление из localStorage
       localStorage.removeItem('auth');
+      localStorage.removeItem('userId');
     },
     // Новая action для восстановления состояния при создании хранилища
     restoreState({ commit }) {
