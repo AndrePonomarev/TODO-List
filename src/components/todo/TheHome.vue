@@ -1,7 +1,6 @@
 <template>
     <TheHeader />
 
-
     <div class="welcomtxt" v-if="isAuthenticated">
         <p>Welcome, {{ user.email }}! <button class="logoutbtn" @click="logout">Logout</button></p>
 
@@ -23,6 +22,7 @@
     <!-- Добавляем модальное окно -->
     <div v-if="isModalOpen" class="modal">
         <div class="modal-content">
+            <p class="modal-stat-text">Добавление нового статуса</p>
 
             <input class="inptname" v-model="name" placeholder="Название">
 
@@ -32,8 +32,6 @@
             </div>
         </div>
     </div>
-
-
 
     <RouterView />
 </template>
@@ -70,6 +68,7 @@ export default {
             name: '',
         };
     },
+
     computed: {
         isAuthenticated() {
             return this.$store.state.isAuthenticated
@@ -80,7 +79,6 @@ export default {
     },
 
     props: ['id'], // Принимаем значение ID через props
-
 
     methods: {
 
@@ -144,7 +142,6 @@ export default {
 
         openModal() {
             this.isModalOpen = true;
-            console.log(this.id)
         },
         closeModal() {
             this.isModalOpen = false;
@@ -157,18 +154,14 @@ export default {
             const newStat = {
                 formData: {
                     name: this.name,
-
                 }
             }
-            console.log(newStat);
 
-            //axios.post(`boards/${board_id}/statuses`, this.newStatus)
             axios.post(`boards/${this.id}/statuses`, newStat)
                 .then(response => {
-                    console.log('Успешно сохранено:', response.data);
-                    this.isModalOpen = false; // Закрываем модальное окно
+                    this.isModalOpen = false;
+                    this.name = '';
                     this.getStatuses();
-                    //this.$emit('status-added'); // Вызываем событие для обновления статусов в TheHome.vue
                 })
                 .catch(error => {
                     console.error('Ошибка сохранения:', error.message);
@@ -194,7 +187,7 @@ export default {
                 })
                 .then(response => {
                     // Обработать успешный ответ, если необходимо
-                    console.log('Task moved successfully:', response.data);
+                    console.log(`Task ${taskId} moved successfully.`, response.data);
 
                     // Обновить массив задач на клиенте
                     const movedTask = this.tasks.find(task => task.id === taskId);
@@ -213,19 +206,10 @@ export default {
         startTaskDrag(columnId) {
             this.currentDragColumnId = columnId;
         },
-
-
-
-
-
-
     },
 
     async created() {
-        //this.registration();
-        //await this.login();
         await this.getStatuses();
-        // await this.getBoards();
         await this.getTasks();
     },
 }

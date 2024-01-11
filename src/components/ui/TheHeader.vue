@@ -105,6 +105,9 @@ header {
   height: 25px;
   padding: 10px;
 }
+.modal-stat-text{
+  margin: 10px;
+}
 
 .lgnlink {
   margin: 7px;

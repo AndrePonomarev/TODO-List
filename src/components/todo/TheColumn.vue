@@ -58,7 +58,7 @@ export default {
       type: Object,
       default: {},
     },
-    startDragColumn: Object, // или что-то подобное, в зависимости от типа свойства
+    startDragColumn: Object, 
     endDragColumn: Object,
     tasks: {
       type: Array,
@@ -68,7 +68,7 @@ export default {
   },
   components: {
     TheTask,
-    Modal, // Зарегистрируйте компонент Modal
+    Modal, 
   },
   data() {
     return {
@@ -106,9 +106,8 @@ export default {
           description: this.taskDescription,
           plannedCompletionAt: this.taskDate,
         }
-
       };
-      //console.log(this.editedTask)
+      
       const updateId = this.editedTask.id;
       axios
         .put(`boards/${this.boardId}/tasks/${this.editedTask.id}`, updatedTask)
@@ -127,10 +126,6 @@ export default {
           // Обработка ошибок
           console.error('Error updating task:', error.message);
         });
-
-
-
-
     },
     deleteTask(taskId) {
       if (confirm('Вы уверены, что хотите удалить эту задачу?')) {
@@ -142,7 +137,6 @@ export default {
 
           // Удалить задачу из массива tasks
           this.$parent.getTasks()
-          //this.tasks = this.tasks.filter(task => task.id !== taskId);
         })
         .catch((error) => {
           // Обработка ошибок
@@ -150,19 +144,13 @@ export default {
         });
       }
     },
-  
-
-
 
     openAddTaskModal() {
       this.isModalOpen = true;
     },
 
     getTaskById(taskId) {
-      // console.log(taskId)
       return this.tasks.find((task) => task.id === taskId);
-
-      //return this.localTask.find((task) => task.id === taskId);
     },
 
     addTask() {
@@ -180,7 +168,6 @@ export default {
 
       };
 
-
       const newId = this.tasks.length + 1;
       const newTaskWithId = {
         ...newTask.formData,
@@ -190,7 +177,7 @@ export default {
 
       this.$emit("addTask", newTask);
 
-      // Используйте новый метод для добавления задачи через API
+      // новый метод для добавления задачи через API
       this.$parent.addTaskViaApi(newTask);
 
 
@@ -236,23 +223,14 @@ export default {
       this.taskDescription = "";
       this.taskDate = "";
     },
-    // openEditTaskModal(taskId) {
-
-    //   this.$emit("openEditTaskModal", taskId);
-    // },
 
   },
-  // watch: {
-  //   tasks(newTasks) {
-  //     this.localTask = newTasks;
-  //   },
-  // }
 };
 </script>
 
 
 <style scoped>
-/* Ваши стили для модального окна */
+/* стили для модального окна */
 .modal {
   display: none;
   position: fixed;
