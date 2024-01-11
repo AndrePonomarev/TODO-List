@@ -1,6 +1,11 @@
 <!-- TheTask.vue -->
 <template>
-  <div class="task-item" draggable="true" @dragstart="startDrag" @dragend="endDrag">
+  <div 
+  v-if="task"
+  class="task-item" 
+  draggable="true" 
+  @dragstart="startDrag" 
+  @dragend="endDrag">
     <h3 class="task-item_title"> {{ task.name }}
       <button class="edit-task-button" @click="openEditTaskModal">
       <img src="../../../src/assets/img/edit-icon.png" alt="Edit">

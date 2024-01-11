@@ -1,7 +1,11 @@
 <!-- TheColumn.vue -->
 <template>
-  <section class="kanban__column" :data-column-id="column.id" @dragover.prevent="allowDrop"
-    @dragenter.prevent="highlightDropArea" @dragleave.prevent="unhighlightDropArea" @drop="handleDrop">
+  <section class="kanban__column" 
+  :data-column-id="column.id" 
+  @dragover.prevent="allowDrop"
+  @dragenter.prevent="highlightDropArea" 
+  @dragleave.prevent="unhighlightDropArea" 
+  @drop="handleDrop">
     <div class="kanban__title-main">
       <h2 class="kanban__title">
         <img :src="column.icon" style="width: 20px;" />{{ column.name }}
@@ -54,6 +58,8 @@ export default {
       type: Object,
       default: {},
     },
+    startDragColumn: Object, // или что-то подобное, в зависимости от типа свойства
+    endDragColumn: Object,
     tasks: {
       type: Array,
       default: {},
@@ -209,29 +215,18 @@ export default {
       event.preventDefault();
     },
     handleDrop(event) {
-      event.preventDefault();
-      const taskId = event.dataTransfer.getData("text/plain");
+    event.preventDefault();
+    const taskId = event.dataTransfer.getData('text/plain');
+    this.$emit('task-dropped', Number(taskId), this.column.id);
+  },
 
-      // Удаляем задачу из текущей колонки
-      this.$emit("remove-task-from-column", Number(taskId), this.column.id);
-
-      // Оповещаем родительский компонент о том, что задача была перетащена в эту колонку
-      this.$emit("task-dropped", Number(taskId), this.column.id);
-    },
-
-    highlightDropArea(event) {
+  highlightDropArea(event) {
       event.target.classList.add('highlighted-drop-area');
     },
     unhighlightDropArea(event) {
       event.target.classList.remove('highlighted-drop-area');
     },
-    startDragColumn(event) {
-      // Ваш код для обработки dragstart в компоненте TheColumn
-    },
-
-    endDragColumn(event) {
-      // Ваш код для обработки dragend в компоненте TheColumn
-    },
+    
 
 
     closeModal() {

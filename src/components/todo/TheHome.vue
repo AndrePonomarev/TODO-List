@@ -1,22 +1,22 @@
 <template>
     <TheHeader />
-    
-    
+
+
     <div class="welcomtxt" v-if="isAuthenticated">
         <p>Welcome, {{ user.email }}! <button class="logoutbtn" @click="logout">Logout</button></p>
-        
+
     </div>
     <div v-else>
         <router-link :to="this.$router.push('/login')"><strong>Go to Redirect Page</strong></router-link>
     </div>
     <div class="divbutns">
-    <button class="addstat" @click="openModal">Добавить статус </button>
-    <button class="backboards" @click="backToBoards">Назад к доскам</button>
+        <button class="addstat" @click="openModal">Добавить статус </button>
+        <button class="backboards" @click="backToBoards">Назад к доскам</button>
     </div>
 
     <div class="kanban">
         <TheColumn v-for="column in statuses" :key="column.id" :boardId="id" :column="column"
-            :tasks="getTasksByColumnId(column.id)" @task-dropped="handleTaskDropped" />
+            :tasks="getTasksByColumnId(column.id)" @task-dropped="handleTaskDropped" @start-drag="startTaskDrag" />
     </div>
     <TheFooter />
 
@@ -33,7 +33,7 @@
         </div>
     </div>
 
-    
+
 
     <RouterView />
 </template>
@@ -60,10 +60,10 @@ export default {
     },
     data() {
         return {
-           
+
             auth: '/login',
             statuses: [],
-           
+
             tasks: [],
 
             isModalOpen: false,
@@ -152,7 +152,7 @@ export default {
 
         },
         saveNewStatus() {
-            
+
             console.log('Сохранение нового статуса:', this.name);
             const newStat = {
                 formData: {
@@ -180,38 +180,39 @@ export default {
         },
 
         handleTaskDropped(taskId, targetColumnId) {
-            console.log('All tasks:', this.tasks);
+            console.log(this.name);
+            // Отправить запрос на сервер для обновления статуса задачи
+            const movedTask = this.tasks.find(task => task.id === taskId);
+            axios
+                .put(`boards/${this.id}/tasks/${taskId}`, {
+                    formData: {
+                        statusId: targetColumnId,
+                        name: movedTask.name,
+                        description: movedTask.description,
+                        plannedCompletionAt: movedTask.plannedCompletionAt
+                    }
+                })
+                .then(response => {
+                    // Обработать успешный ответ, если необходимо
+                    console.log('Task moved successfully:', response.data);
 
-            const currentTaskIndex = this.tasks.findIndex(task => task.id === taskId);
+                    // Обновить массив задач на клиенте
+                    const movedTask = this.tasks.find(task => task.id === taskId);
+                    movedTask.statusId = targetColumnId;
 
-            if (currentTaskIndex === -1) {
-                console.warn(`Task with ID ${taskId} not found.`);
-                return;
-            }
+                    // Обновить статусы и задачи на клиенте
+                    this.getStatuses();
+                    this.getTasks();
+                })
+                .catch(error => {
+                    // Обработать ошибку
+                    console.error('Error moving task:', error.message);
+                });
+        },
 
-            const currentTask = this.tasks[currentTaskIndex];
-
-            if (currentTask.columnId === targetColumnId) {
-                console.warn(`Task with ID ${taskId} is already in the target column.`);
-                return;
-            }
-
-            // Обновляем tasks
-            const updatedTasks = [...this.tasks];
-            updatedTasks[currentTaskIndex] = { ...currentTask, columnId: targetColumnId };
-            this.tasks = updatedTasks;
-
-            // Обновляем statuses
-            this.statuses = this.statuses.map(column => ({
-                ...column,
-                tasks:
-                    column.id === targetColumnId
-                        ? column.tasks.includes(taskId)
-                            ? column.tasks
-                            : [...(column.tasks || []), taskId]
-                        : (column.tasks || []).filter(id => id !== taskId),
-            }));
-        }
+        startTaskDrag(columnId) {
+            this.currentDragColumnId = columnId;
+        },
 
 
 
@@ -230,8 +231,4 @@ export default {
 }
 </script>
 
-<style>
-
-
- 
-</style>
+<style></style>
