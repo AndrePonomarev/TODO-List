@@ -27,3 +27,11 @@ npm run dev
 ```sh
 npm run build
 ```
+# Accounts
+
+andrew@efko.ru
+qwert
+
+vasya@efko.ru
+qwert
+

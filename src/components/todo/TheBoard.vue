@@ -44,7 +44,51 @@
         <div v-else>
             <p>У вас пока нет досок</p>
         </div>
-        <div @click="openRoleModal">⚙️</div>
+
+        <div>
+            <!-- Кнопка для открытия модального окна -->
+            <div @click="openRoleModal">⚙️</div>
+
+            <!-- Модальное окно с поиском и списком пользователей -->
+            <div v-if="isRoleModalOpen" class="modal">
+                <div class="modal-content">
+                    <!-- Input для поиска пользователя по имени -->
+                    <input v-model="searchQuery" placeholder="Поиск по имени" />
+
+                    <!-- Список пользователей -->
+                    <div v-for="user in filteredUsers" :key="user.id">
+                        <div class="user-info">
+                            <div>{{ user.email }}</div>
+                            <!-- Три точки справа от пользователя -->
+                            <div class="user-options" @click="toggleUserOptions(user.id)">...</div>
+
+                            <!-- Аккордеон с ролями -->
+                            <div v-if="expandedUserId === user.id" class="user-roles-accordion">
+                                <!-- Переключатель для Управление статусами -->
+                                <div>
+                                    <input type="checkbox" v-model="userRoles[user.id]['Управление статусами']" />
+                                    Управление статусами
+                                </div>
+                                <!-- Переключатель для Управление досками -->
+                                <div>
+                                    <input type="checkbox" v-model="userRoles[user.id]['Управление досками']" />
+                                    Управление досками
+                                </div>
+                                <!-- Переключатель для Управление юзерами -->
+                                <div>
+                                    <input type="checkbox" v-model="userRoles[user.id]['Управление юзерами']" />
+                                    Управление юзерами
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Кнопка для закрытия модального окна -->
+                    <div @click="closeRoleModal">Закрыть</div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </template>
   
@@ -67,12 +111,54 @@ export default {
             boards: [], // массив для хранения досок пользователя
             currentBoardId: null,
             userId: localStorage.getItem('userId'),
+            isRoleModalOpen: false,
+            searchQuery: "",
+            expandedUserId: null,
+           
+            roles: ["Управление статусами", "Редактор", "Просмотрщик"],
+            userRoles: {}, // Объект для хранения ролей пользователей
         };
+    },
+    computed: {
+        filteredUsers() {
+            // Применяем фильтрацию по searchQuery
+            return this.users.filter((user) =>
+                user.email.toLowerCase().includes(this.searchQuery.toLowerCase())
+            );
+        },
     },
     mounted() {
         this.fetchBoards(); // при монтировании компонента получаем доски пользователя
     },
     methods: {
+        async openRoleModal() {
+            try {
+                const response = await axios.get('/boards/5/users');
+                this.users = response.data;
+                // Инициализация объекта ролей
+                this.userRoles = this.users.reduce((acc, user) => {
+                    acc[user.id] = {};
+                    this.roles.forEach((role) => {
+                        acc[user.id][role] = false;
+                    });
+                    return acc;
+                }, {});
+                this.isRoleModalOpen = true;
+            } catch (error) {
+                console.error('Ошибка при получении пользователей:', error.message);
+            }
+        },
+        closeRoleModal() {
+            this.isRoleModalOpen = false;
+            // Сброс раскрытого пользователя при закрытии модального окна
+            this.expandedUserId = null;
+        },
+        toggleUserOptions(userId) {
+            // Переключаем состояние аккордеона
+            this.expandedUserId = this.expandedUserId === userId ? null : userId;
+        },
+
+
         openCreateModal() {
             this.createModalVisible = true;
         },
@@ -96,7 +182,7 @@ export default {
 
         fetchBoards() {
             // Запрос на сервер для получения досок пользователя
-    
+
             axios.get(`user/${this.userId}/boards`)
                 .then(response => {
 
@@ -119,7 +205,7 @@ export default {
             }
             //console.log(nBoard)
 
-          
+
             axios.post(`user/${this.userId}/boards`, nBoard)
                 .then(response => {
                     // Обработка успешного создания доски
@@ -146,7 +232,7 @@ export default {
                 }
             }
             console.log(this.editedBoardId)
-           
+
             const boardId = this.editedBoardId;
             axios.put(`user/${this.userId}/boards/${boardId}`, eBoard)
                 .then(response => {
@@ -310,6 +396,50 @@ export default {
     padding: 5px;
     margin: 2px;
     cursor: pointer;
+}
+
+/* Стили для модального окна */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+}
+
+.user-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.user-options {
+    cursor: pointer;
+    /* Добавлено для указания, что есть возможность нажатия */
+}
+
+.user-roles-accordion {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+}
+
+.user-roles-accordion div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
 }
 </style>
   
