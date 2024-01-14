@@ -34,6 +34,8 @@
                 <div class="board-info">
                     <h2 @click="redirectToHome(board.id)">{{ board.name }}</h2>
                     <p>{{ board.description }}</p>
+                    <!-- Кнопка для открытия модального окна -->
+                    <div @click="openRoleModal(board.id)">Управление⚙️</div>
                 </div>
                 <div class="board-actions">
                     <button @click="openEditModal(board.id)" class="edit-btn">Изменить</button>
@@ -46,8 +48,7 @@
         </div>
 
         <div>
-            <!-- Кнопка для открытия модального окна -->
-            <div @click="openRoleModal">⚙️</div>
+
 
             <!-- Модальное окно с поиском и списком пользователей -->
             <div v-if="isRoleModalOpen" class="modal">
@@ -66,17 +67,22 @@
                             <div v-if="expandedUserId === user.id" class="user-roles-accordion">
                                 <!-- Переключатель для Управление статусами -->
                                 <div>
-                                    <input type="checkbox" v-model="userRoles[user.id]['Управление статусами']" />
+                                    <input type="checkbox"
+                                        @click="editPermissionUser(user.id, board.id, 'manage-board-statuses')"
+                                        v-model="userRoles[user.id]['manage-board-statuses']" />
                                     Управление статусами
                                 </div>
                                 <!-- Переключатель для Управление досками -->
                                 <div>
-                                    <input type="checkbox" v-model="userRoles[user.id]['Управление досками']" />
+                                    <input type="checkbox" @click="editPermissionUser(user.id, board.id, 'manage-board')"
+                                        v-model="userRoles[user.id]['manage-board']" />
                                     Управление досками
                                 </div>
                                 <!-- Переключатель для Управление юзерами -->
                                 <div>
-                                    <input type="checkbox" v-model="userRoles[user.id]['Управление юзерами']" />
+                                    <input type="checkbox"
+                                        @click="editPermissionUser(user.id, board.id, 'manage-board-users')"
+                                        v-model="userRoles[user.id]['manage-board-users']" />
                                     Управление юзерами
                                 </div>
                             </div>
@@ -114,8 +120,12 @@ export default {
             isRoleModalOpen: false,
             searchQuery: "",
             expandedUserId: null,
-           
-            roles: ["Управление статусами", "Редактор", "Просмотрщик"],
+            users: {},
+            roles: {
+                'manage-board-statuses': "Управление статусами",
+                'manage-board': "Управление досками",
+                'manage-board-users': "Управление юзерами"
+            },
             userRoles: {}, // Объект для хранения ролей пользователей
         };
     },
@@ -131,23 +141,58 @@ export default {
         this.fetchBoards(); // при монтировании компонента получаем доски пользователя
     },
     methods: {
-        async openRoleModal() {
+
+        async editPermissionUser(userId, boardId, permission) {
+            console.log(boardId,userId,permission)
+            await axios.get(`/boards/${boardId}/users/${userId}/permissions`)
+                .then(response => {
+                    
+                    if (response.data.indexOf(permission) != -1) {
+                        this.userRoles[userId][permission] = false;
+                         axios.get(`/boards/${boardId}/users/${userId}/permissions/${permission}`)
+                    } else {
+                        this.userRoles[userId][permission] = true;
+                         axios.delete(`/boards/${boardId}/users/${userId}/permissions/${permission}`)
+                    }
+                })
+        },
+
+        async openRoleModal(boardId) {
             try {
-                const response = await axios.get('/boards/5/users');
-                this.users = response.data;
-                // Инициализация объекта ролей
-                this.userRoles = this.users.reduce((acc, user) => {
-                    acc[user.id] = {};
-                    this.roles.forEach((role) => {
-                        acc[user.id][role] = false;
-                    });
-                    return acc;
-                }, {});
+                const usersResponse = await axios.get(`/boards/${boardId}/users`);
+                this.users = usersResponse.data;
+
+                for (const user of this.users) {
+                    try {
+                        const permissionsResponse = await axios.get(`/boards/${boardId}/users/${user.id}/permissions`);
+                        //console.log(permissionsResponse);
+                        this.userRoles[user.id] = {};
+                        for (let role in this.roles) {
+                            if (permissionsResponse.data.indexOf(role) != -1)
+                                this.userRoles[user.id][role] = true;
+                            else
+                                this.userRoles[user.id][role] = false;
+                        }
+                        console.log(this.userRoles)
+                        // this.roles.forEach((role) => {
+
+                        //     console.log(role)
+
+                        //     if (permissionsResponse.data.indexOf(role) != -1)
+                        //     this.userRoles[user.id][role] = false;
+                        // });
+                    } catch (permissionsError) {
+                        console.error('Ошибка при получении разрешений пользователя', permissionsError);
+                    }
+                }
+
                 this.isRoleModalOpen = true;
-            } catch (error) {
-                console.error('Ошибка при получении пользователей:', error.message);
+            } catch (usersError) {
+                console.error('Ошибка при получении пользователей', usersError);
             }
         },
+
+
         closeRoleModal() {
             this.isRoleModalOpen = false;
             // Сброс раскрытого пользователя при закрытии модального окна
