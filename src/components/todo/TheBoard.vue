@@ -2,7 +2,7 @@
 <template>
     <div>
         <div class="main-text">
-            <h1>Доски пользователя</h1>
+            <h1 class="main-h1">Доски пользователя</h1>
             <button @click="openCreateModal" class="create-btn">Создать доску</button>
         </div>
         <!-- Модальное окно -->
@@ -32,10 +32,10 @@
         <div v-if="boards.length > 0">
             <div v-for="board in boards" :key="board.id" class="board-container">
                 <div class="board-info">
-                    <h2 @click="redirectToHome(board.id)">{{ board.name }}</h2>
+                    <h2 class="brd-name" @click="redirectToHome(board.id)">{{ board.name }}</h2>
                     <p>{{ board.description }}</p>
                     <!-- Кнопка для открытия модального окна -->
-                    <div @click="openRoleModal(board.id)">Управление⚙️</div>
+                    <div class="brd-admin" @click="openRoleModal(board.id)">Управление ⚙️</div>
                 </div>
                 <div class="board-actions">
                     <button @click="openEditModal(board.id)" class="edit-btn">Изменить</button>
@@ -67,21 +67,19 @@
                             <div v-if="expandedUserId === user.id" class="user-roles-accordion">
                                 <!-- Переключатель для Управление статусами -->
                                 <div>
-                                    <input type="checkbox"
-                                        @click="editPermissionUser(user.id, board.id, 'manage-board-statuses')"
-                                        v-model="userRoles[user.id]['manage-board-statuses']" />
+                                    <input type="checkbox" @click="editPermissionUser(user.id, 'delete-board-statuses')"
+                                        v-model="userRoles[user.id]['delete-board-statuses']" />
                                     Управление статусами
                                 </div>
                                 <!-- Переключатель для Управление досками -->
                                 <div>
-                                    <input type="checkbox" @click="editPermissionUser(user.id, board.id, 'manage-board')"
+                                    <input type="checkbox" @click="editPermissionUser(user.id, 'manage-board')"
                                         v-model="userRoles[user.id]['manage-board']" />
                                     Управление досками
                                 </div>
                                 <!-- Переключатель для Управление юзерами -->
                                 <div>
-                                    <input type="checkbox"
-                                        @click="editPermissionUser(user.id, board.id, 'manage-board-users')"
+                                    <input type="checkbox" @click="editPermissionUser(user.id, 'manage-board-users')"
                                         v-model="userRoles[user.id]['manage-board-users']" />
                                     Управление юзерами
                                 </div>
@@ -122,11 +120,12 @@ export default {
             expandedUserId: null,
             users: {},
             roles: {
-                'manage-board-statuses': "Управление статусами",
+                'delete-board-statuses': "Управление статусами",
                 'manage-board': "Управление досками",
                 'manage-board-users': "Управление юзерами"
             },
             userRoles: {}, // Объект для хранения ролей пользователей
+            currentBoardId: null,
         };
     },
     computed: {
@@ -142,22 +141,8 @@ export default {
     },
     methods: {
 
-        async editPermissionUser(userId, boardId, permission) {
-            console.log(boardId,userId,permission)
-            await axios.get(`/boards/${boardId}/users/${userId}/permissions`)
-                .then(response => {
-                    
-                    if (response.data.indexOf(permission) != -1) {
-                        this.userRoles[userId][permission] = false;
-                         axios.get(`/boards/${boardId}/users/${userId}/permissions/${permission}`)
-                    } else {
-                        this.userRoles[userId][permission] = true;
-                         axios.delete(`/boards/${boardId}/users/${userId}/permissions/${permission}`)
-                    }
-                })
-        },
-
         async openRoleModal(boardId) {
+            this.currentBoardId = boardId; // Установите текущий boardId
             try {
                 const usersResponse = await axios.get(`/boards/${boardId}/users`);
                 this.users = usersResponse.data;
@@ -165,7 +150,6 @@ export default {
                 for (const user of this.users) {
                     try {
                         const permissionsResponse = await axios.get(`/boards/${boardId}/users/${user.id}/permissions`);
-                        //console.log(permissionsResponse);
                         this.userRoles[user.id] = {};
                         for (let role in this.roles) {
                             if (permissionsResponse.data.indexOf(role) != -1)
@@ -173,14 +157,6 @@ export default {
                             else
                                 this.userRoles[user.id][role] = false;
                         }
-                        console.log(this.userRoles)
-                        // this.roles.forEach((role) => {
-
-                        //     console.log(role)
-
-                        //     if (permissionsResponse.data.indexOf(role) != -1)
-                        //     this.userRoles[user.id][role] = false;
-                        // });
                     } catch (permissionsError) {
                         console.error('Ошибка при получении разрешений пользователя', permissionsError);
                     }
@@ -189,6 +165,25 @@ export default {
                 this.isRoleModalOpen = true;
             } catch (usersError) {
                 console.error('Ошибка при получении пользователей', usersError);
+            }
+        },
+        // ...
+        async editPermissionUser(userId, permission) {
+            //console.log(this.currentBoardId, userId, permission);
+            try {
+                const response = await axios.get(`/boards/${this.currentBoardId}/users/${userId}/permissions`);
+                if (response.data.indexOf(permission) !== -1) {
+                    this.userRoles[userId][permission] = false;
+
+                    await axios.delete(`/boards/${this.currentBoardId}/users/${userId}/permissions/${permission}`);
+                } else {
+                    this.userRoles[userId][permission] = true;
+                    await axios.put(`/boards/${this.currentBoardId}/users/${userId}/permissions/${permission}`);
+                }
+                console.log(`Изменено разрешение ${permission} для userId: `, userId)
+                await axios.get(`/boards/${this.currentBoardId}/users/${userId}/permissions`)
+            } catch (error) {
+                console.error('Ошибка при обновлении разрешений пользователя', error);
             }
         },
 
@@ -314,10 +309,10 @@ export default {
     /* изменение направления отображения на вертикальное */
     justify-content: space-between;
     border: 1px solid #ccc;
-    padding: 10px;
+    padding: 20px;
     margin: 15px;
     background-color: rgb(213, 193, 224);
-    width: 200px;
+    width: 250px;
     border-radius: 10px;
     /* скругление углов */
 }
@@ -389,11 +384,34 @@ export default {
 }
 
 .board-info {
-    color: rgb(119, 45, 159)
+    color: rgb(119, 45, 159);
+}
+
+
+.brd-name{
+    cursor: pointer;
+}
+
+.brd-name:hover{
+    cursor: pointer;
+    color: rgb(26, 201, 224);
+}
+
+.brd-admin {
+    cursor: pointer;
+}
+
+.brd-admin:hover {
+    cursor: pointer;
+    color: rgb(26, 201, 224);
 }
 
 .main-text {
     margin: 15px;
+}
+
+.main-h1 {
+    padding: 10px;
 }
 
 /* Стили для модального окна */
