@@ -39,7 +39,9 @@
                 </div>
                 <div class="board-actions">
                     <button @click="openEditModal(board.id)" class="edit-btn">Изменить</button>
-                    <button @click="deleteBoard(board.id)" class="delete-btn">Удалить</button>
+                    <div >
+                        <button @click="deleteBoard(board.id)" class="delete-btn">Удалить</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -59,40 +61,70 @@
                     <!-- Список пользователей -->
                     <div v-for="user in filteredUsers" :key="user.id">
                         <div class="user-info">
-                            <div>{{ user.email }}</div>
-                            <!-- Три точки справа от пользователя -->
-                            <div class="user-options" @click="toggleUserOptions(user.id)">...</div>
+                            <div class="user-info-top">
+                                <div>{{ user.email }}</div>
+                                <!-- Три точки справа от пользователя -->
+                                <div class="user-options" @click="toggleUserOptions(user.id)">
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
+                                </div>
+                            </div>
+
 
                             <!-- Аккордеон с ролями -->
                             <div v-if="expandedUserId === user.id" class="user-roles-accordion">
                                 <!-- Переключатель для Управление статусами -->
-                                <div>
-                                    <input type="checkbox" @click="editPermissionUser(user.id, 'delete-board-statuses')"
-                                        v-model="userRoles[user.id]['delete-board-statuses']" />
-                                    Управление статусами
+
+                                <div class="checkbox-container">
+                                    <input type="checkbox" id="delete-board"
+                                        @click="editPermissionUser(user.id, 'delete-board')"
+                                        v-model="userRoles[user.id]['delete-board']" />
+                                    <label for="delete-board" class="checkbox-visual"></label>
+                                    Удаление досок
                                 </div>
-                                <!-- Переключатель для Управление досками -->
-                                <div>
-                                    <input type="checkbox" @click="editPermissionUser(user.id, 'manage-board')"
+
+
+                                <div class="checkbox-container">
+                                    <input type="checkbox" id="delete-board-statuses"
+                                        @click="editPermissionUser(user.id, 'delete-board-statuses')"
+                                        v-model="userRoles[user.id]['delete-board-statuses']" />
+                                    <label for="delete-board-statuses" class="checkbox-visual"></label>
+                                    Удаление статусов
+                                </div>
+
+                                <div class="checkbox-container">
+                                    <input type="checkbox" id="manage-board"
+                                        @click="editPermissionUser(user.id, 'manage-board')"
                                         v-model="userRoles[user.id]['manage-board']" />
+                                    <label for="manage-board" class="checkbox-visual"></label>
                                     Управление досками
                                 </div>
-                                <!-- Переключатель для Управление юзерами -->
-                                <div>
-                                    <input type="checkbox" @click="editPermissionUser(user.id, 'manage-board-users')"
+
+                                <div class="checkbox-container">
+                                    <input type="checkbox" id="manage-board-statuses"
+                                        @click="editPermissionUser(user.id, 'manage-board-statuses')"
+                                        v-model="userRoles[user.id]['manage-board-statuses']" />
+                                    <label for="manage-board-statuses" class="checkbox-visual"></label>
+                                    Управление статусами досок
+                                </div>
+
+                                <div class="checkbox-container">
+                                    <input type="checkbox" id="manage-board-users"
+                                        @click="editPermissionUser(user.id, 'manage-board-users')"
                                         v-model="userRoles[user.id]['manage-board-users']" />
+                                    <label for="manage-board-users" class="checkbox-visual"></label>
                                     Управление юзерами
                                 </div>
+
+                                <!-- Кнопка для закрытия модального окна -->
+                                <div @click="closeRoleModal">Закрыть</div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Кнопка для закрытия модального окна -->
-                    <div @click="closeRoleModal">Закрыть</div>
                 </div>
             </div>
         </div>
-
     </div>
 </template>
   
@@ -120,12 +152,15 @@ export default {
             expandedUserId: null,
             users: {},
             roles: {
-                'delete-board-statuses': "Управление статусами",
+                'delete-board': 'Удаление досок',
+                'delete-board-statuses': "Удаление статусов",
                 'manage-board': "Управление досками",
+                'manage-board-statuses': 'Управление статусами досок',
                 'manage-board-users': "Управление юзерами"
             },
             userRoles: {}, // Объект для хранения ролей пользователей
             currentBoardId: null,
+            
         };
     },
     computed: {
@@ -140,6 +175,8 @@ export default {
         this.fetchBoards(); // при монтировании компонента получаем доски пользователя
     },
     methods: {
+
+    
 
         async openRoleModal(boardId) {
             this.currentBoardId = boardId; // Установите текущий boardId
@@ -311,7 +348,8 @@ export default {
     border: 1px solid #ccc;
     padding: 20px;
     margin: 15px;
-    background-color: rgb(213, 193, 224);
+    background: rgb(174, 123, 213);
+    background: linear-gradient(90deg, rgba(174, 123, 213, 1) 38%, rgba(114, 176, 209, 1) 71%);
     width: 250px;
     border-radius: 10px;
     /* скругление углов */
@@ -388,11 +426,11 @@ export default {
 }
 
 
-.brd-name{
+.brd-name {
     cursor: pointer;
 }
 
-.brd-name:hover{
+.brd-name:hover {
     cursor: pointer;
     color: rgb(26, 201, 224);
 }
@@ -432,7 +470,7 @@ export default {
     color: black;
     padding: 20px;
     border-radius: 10px;
-    width: 300px;
+    width: 400px;
     text-align: center;
 }
 
@@ -486,12 +524,18 @@ export default {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
+    flex-direction: column;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    border-radius: 10px;
 }
 
-.user-options {
-    cursor: pointer;
-    /* Добавлено для указания, что есть возможность нажатия */
+.user-info-top {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
+
 
 .user-roles-accordion {
     display: flex;
@@ -503,6 +547,77 @@ export default {
     display: flex;
     align-items: center;
     margin-bottom: 5px;
+}
+
+.user-options {
+    /*  стили для троеточия */
+    display: flex;
+    flex-direction: column;
+    /* Расположение точек вертикально */
+    cursor: pointer;
+}
+
+.dot {
+    width: 3px;
+    height: 3px;
+    background-color: black;
+    border-radius: 50%;
+    /* Сделать точку круглой */
+    margin: 2px;
+    /* Расстояние между точками */
+}
+
+/* Общие стили для всех переключателей */
+input[type="checkbox"] {
+    display: none;
+    /* Скрыть оригинальный чекбокс */
+}
+
+/* Стилизация контейнера переключателя */
+.checkbox-container {
+    position: relative;
+    padding-left: 30px;
+    /* Расстояние от левого края до текста */
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+/* Стилизация отображаемого внешнего контейнера переключателя */
+.checkbox-visual {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: #eee;
+    /* Цвет фона */
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    /* Анимация перехода цвета фона */
+}
+
+/* Стилизация галочки внутри переключателя */
+.checkbox-visual:after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 7px;
+    top: 4px;
+    width: 6px;
+    height: 12px;
+    border: solid rgb(16, 9, 9);
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+/* Отображение галочки при выборе чекбокса */
+input[type="checkbox"]:checked+.checkbox-visual:after {
+    display: block;
+}
+
+/* Изменение цвета фона при наведении */
+.checkbox-container:hover .checkbox-visual {
+    background-color: #ccc;
 }
 </style>
   

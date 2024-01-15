@@ -10,11 +10,32 @@ import TheBoard from '../components/todo/TheBoard.vue'
   history: createWebHistory (''),
   routes: [
     {
+      path: '/',
+      redirect: '/login', // При первом заходе на корень, перенаправляем на страницу login
+    },
+    
+    {
       path: '/home/:id',
-      name: 'home',
+      name: 'home-id',
       component: TheHome,
       props: true // передача параметров в компонент через props
     },
+    {
+      path: '/home',
+      name: 'home',
+      component: TheHome,
+      props: true, // передача параметров в компонент через props
+      beforeEnter: (to, from, next) => {
+        // Ваша логика проверки авторизации
+        const isAuthenticated = localStorage.getItem('token');
+        if (!isAuthenticated) {
+          next('/login');
+        } else {
+          next();
+        }
+      }
+    },
+
     {
       path: '/register',
       name: 'register',
@@ -25,10 +46,24 @@ import TheBoard from '../components/todo/TheBoard.vue'
       name: 'login',
       component: () => import('../components/Login.vue')
     },
+    // {
+    //   path: '/board',
+    //   name: 'board',
+    //   component: TheBoard
+    // }
     {
       path: '/board',
       name: 'board',
-      component: TheBoard
+      component: TheBoard,
+      beforeEnter: (to, from, next) => {
+        // Ваша логика проверки авторизации
+        const isAuthenticated = localStorage.getItem('token');
+        if (!isAuthenticated) {
+          next('/login');
+        } else {
+          next();
+        }
+      }
     }
   ]
  })
