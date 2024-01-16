@@ -107,10 +107,11 @@ export default {
   width: 100%;
   padding: 8px;
   box-sizing: border-box;
-  border-radius: 10px;
+  border-radius: 5px;
   width: 300px;
   height: 45px;
   background: rgba(213, 204, 255, 1);
+  border: none;
 }
 
 .checkbox {
@@ -159,7 +160,7 @@ input[type="checkbox"]:checked::before {
   display: flex;
   justify-content: center;
   align-items: center;
-  color: grey;
+  color: black;
 }
 </style>
   

@@ -39,7 +39,7 @@
                 </div>
                 <div class="board-actions">
                     <button @click="openEditModal(board.id)" class="edit-btn">Изменить</button>
-                    <div >
+                    <div>
                         <button @click="deleteBoard(board.id)" class="delete-btn">Удалить</button>
                     </div>
                 </div>
@@ -140,7 +140,6 @@ export default {
                 description: ""
             },
             editedBoard: {
-
                 name: "",
                 description: ""
             },
@@ -159,8 +158,6 @@ export default {
                 'manage-board-users': "Управление юзерами"
             },
             userRoles: {}, // Объект для хранения ролей пользователей
-            currentBoardId: null,
-            
         };
     },
     computed: {
@@ -175,8 +172,6 @@ export default {
         this.fetchBoards(); // при монтировании компонента получаем доски пользователя
     },
     methods: {
-
-    
 
         async openRoleModal(boardId) {
             this.currentBoardId = boardId; // Установите текущий boardId
@@ -204,21 +199,19 @@ export default {
                 console.error('Ошибка при получении пользователей', usersError);
             }
         },
-        // ...
+
         async editPermissionUser(userId, permission) {
-            //console.log(this.currentBoardId, userId, permission);
             try {
                 const response = await axios.get(`/boards/${this.currentBoardId}/users/${userId}/permissions`);
                 if (response.data.indexOf(permission) !== -1) {
                     this.userRoles[userId][permission] = false;
-
                     await axios.delete(`/boards/${this.currentBoardId}/users/${userId}/permissions/${permission}`);
                 } else {
                     this.userRoles[userId][permission] = true;
                     await axios.put(`/boards/${this.currentBoardId}/users/${userId}/permissions/${permission}`);
                 }
-                console.log(`Изменено разрешение ${permission} для userId: `, userId)
-                await axios.get(`/boards/${this.currentBoardId}/users/${userId}/permissions`)
+                console.log(`Изменено разрешение ${permission} для userId: `, userId);
+                await axios.get(`/boards/${this.currentBoardId}/users/${userId}/permissions`);
             } catch (error) {
                 console.error('Ошибка при обновлении разрешений пользователя', error);
             }
@@ -313,7 +306,6 @@ export default {
             const boardId = this.editedBoardId;
             axios.put(`user/${this.userId}/boards/${boardId}`, eBoard)
                 .then(response => {
-                    // Обработка успешного редактирования доски
                     // обновить список досок после успешного редактирования
                     this.fetchBoards();
 
@@ -339,11 +331,10 @@ export default {
 };
 </script>
   
-<style>
+<style scoped>
 .board-container {
     display: flex;
-    flex-direction: column;
-    /* изменение направления отображения на вертикальное */
+    flex-direction: column; /* изменение направления отображения на вертикальное */
     justify-content: space-between;
     border: 1px solid #ccc;
     padding: 20px;
@@ -351,8 +342,7 @@ export default {
     background: rgb(174, 123, 213);
     background: linear-gradient(90deg, rgba(174, 123, 213, 1) 38%, rgba(114, 176, 209, 1) 71%);
     width: 250px;
-    border-radius: 10px;
-    /* скругление углов */
+    border-radius: 10px; /* скругление углов */
 }
 
 
@@ -360,20 +350,16 @@ export default {
 .board-actions {
     margin-top: 10px;
     display: flex;
-    justify-content: space-around;
-    /* равномерное распределение кнопок внутри .board-actions */
+    justify-content: space-around; /* равномерное распределение кнопок внутри .board-actions */
 }
 
 .board-actions button {
-    margin-top: 5px;
-    /* отступ между кнопками "Изменить" и "Удалить" */
+    margin-top: 5px; /* отступ между кнопками "Изменить" и "Удалить" */
 }
 
 .board-actions button:hover {
-    background-color: #a38bc4;
-    /* изменение цвета при наведении курсора */
-    color: #fff;
-    /* изменение цвета текста при наведении курсора */
+    background-color: #a38bc4; /* изменение цвета при наведении курсора */
+    color: #fff; /* изменение цвета текста при наведении курсора */
 }
 
 /* Стили для кнопки "Изменить" */

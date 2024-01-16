@@ -1,49 +1,36 @@
 <!-- TheTask.vue -->
 <template>
-  <div 
-  v-if="task"
-  class="task-item" 
-  draggable="true" 
-  @dragstart="startDrag" 
-  @dragend="endDrag">
+  <div v-if="task" class="task-item" draggable="true" @dragstart="startDrag" @dragend="endDrag">
     <h3 class="task-item_title"> {{ task.name }}
       <button class="edit-task-button" @click="openEditTaskModal">
-      <img src="../../../src/assets/img/edit-icon.png" alt="Edit">
-    </button> </h3>
+        <img src="../../../src/assets/img/edit-icon.png" alt="Edit">
+      </button>
+    </h3>
     <p class="task-item_description">{{ task.description }}</p>
     <div class="task-item__complexity complexity">
-      <span
-        v-for="dot in getComplexityDots(task.plannedCompletionAt)"
-        :key="dot.id"
-        class="complexity__dot"
-        :class="dot.class"
-      ></span>
+      <span v-for="dot in getComplexityDots(task.plannedCompletionAt)" :key="dot.id" class="complexity__dot"
+        :class="dot.class"></span>
     </div>
     <span class="task-item__datetime">{{ task.plannedCompletionAt }}</span>
-    
+
     <button class="delete-task-button" @click="deleteTask">❌
     </button>
   </div>
-
-  
-
 </template>
   
 <script>
 
 export default {
 
-
   props: {
     task: {
       type: Object,
       default: {},
     },
-    
   },
+
   data() {
     return {
-      
       taskName: "",
       taskDescription: "",
       taskDate: "",
@@ -55,7 +42,7 @@ export default {
     deleteTask() {
       this.$emit("delete-task", this.task.id);
     },
-   
+
     openEditTaskModal(taskId) {
       this.$emit("open-edit-task-modal", this.task);
     },
@@ -82,7 +69,6 @@ export default {
       } else {
         dots.push({ id: 3, class: 'green-dot' });
       }
-
       return dots;
     },
   },
@@ -90,19 +76,18 @@ export default {
 </script>
   
 <style scoped>
-
 .complexity__dot {
   width: 24px;
-    height: 12px;
-    flex-shrink: 0;
-    background-color: #d9d9d9; 
-    border-radius: 0px 10px 10px 24px;
-    display: inline-block;
-    margin-right: 5px;
+  height: 12px;
+  flex-shrink: 0;
+  background-color: #d9d9d9;
+  border-radius: 0px 10px 10px 24px;
+  display: inline-block;
+  margin-right: 5px;
 }
 
 .green-dot {
-  background-color: #2ce49d; 
+  background-color: #2ce49d;
 }
 
 .yellow-dot {
@@ -110,7 +95,7 @@ export default {
 }
 
 .red-dot {
-  background-color: #e42c5f; 
+  background-color: #e42c5f;
 }
 </style>
   

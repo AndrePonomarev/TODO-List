@@ -66,6 +66,7 @@ header {
   background: white;
   padding: 20px;
   border: 1px solid #ccc;
+  border-radius: 5px;
   position: relative;
   width: 300px;
   /* Ширина модального окна, можно настроить по своему усмотрению */
@@ -107,6 +108,8 @@ header {
 }
 .modal-stat-text{
   margin: 10px;
+  color: black;
+  padding: 10px;
 }
 
 .lgnlink {

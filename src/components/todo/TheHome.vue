@@ -58,12 +58,9 @@ export default {
     },
     data() {
         return {
-
             auth: '/login',
             statuses: [],
-
             tasks: [],
-
             isModalOpen: false,
             name: '',
         };
@@ -101,7 +98,6 @@ export default {
                 .then(() => {
                     this.$router.push('/login');
                 })
-
         },
 
 

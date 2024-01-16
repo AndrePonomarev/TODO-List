@@ -1,11 +1,7 @@
 <!-- TheColumn.vue -->
 <template>
-  <section class="kanban__column" 
-  :data-column-id="column.id" 
-  @dragover.prevent="allowDrop"
-  @dragenter.prevent="highlightDropArea" 
-  @dragleave.prevent="unhighlightDropArea" 
-  @drop="handleDrop">
+  <section class="kanban__column" :data-column-id="column.id" @dragover.prevent="allowDrop"
+    @dragenter.prevent="highlightDropArea" @dragleave.prevent="unhighlightDropArea" @drop="handleDrop">
     <div class="kanban__title-main">
       <h2 class="kanban__title">
         <img :src="column.icon" style="width: 20px;" />{{ column.name }}
@@ -16,7 +12,7 @@
     </div>
     <div class="kanban__list">
       <TheTask v-for="task in tasks" :key="task.id" :task="task" @open-edit-task-modal="openEditTaskModal"
-        @dragstart="startDragColumn" @dragend="endDragColumn"  @delete-task="deleteTask"/>
+        @dragstart="startDragColumn" @dragend="endDragColumn" @delete-task="deleteTask" />
     </div>
 
     <!-- Используйте новый компонент Modal.vue для модального окна -->
@@ -58,7 +54,7 @@ export default {
       type: Object,
       default: {},
     },
-    startDragColumn: Object, 
+    startDragColumn: Object,
     endDragColumn: Object,
     tasks: {
       type: Array,
@@ -68,7 +64,7 @@ export default {
   },
   components: {
     TheTask,
-    Modal, 
+    Modal,
   },
   data() {
     return {
@@ -107,7 +103,7 @@ export default {
           plannedCompletionAt: this.taskDate,
         }
       };
-      
+
       const updateId = this.editedTask.id;
       axios
         .put(`boards/${this.boardId}/tasks/${this.editedTask.id}`, updatedTask)
@@ -129,19 +125,19 @@ export default {
     },
     deleteTask(taskId) {
       if (confirm('Вы уверены, что хотите удалить эту задачу?')) {
-      axios
-        .delete(`boards/${this.boardId}/tasks/${taskId}`)
-        .then((response) => {
-          // Обработка успешного ответа, если необходимо
-          console.log('Task deleted successfully:', response.data);
+        axios
+          .delete(`boards/${this.boardId}/tasks/${taskId}`)
+          .then((response) => {
+            // Обработка успешного ответа, если необходимо
+            console.log('Task deleted successfully:', response.data);
 
-          // Удалить задачу из массива tasks
-          this.$parent.getTasks()
-        })
-        .catch((error) => {
-          // Обработка ошибок
-          console.error('Error deleting task:', error.message);
-        });
+            // Удалить задачу из массива tasks
+            this.$parent.getTasks()
+          })
+          .catch((error) => {
+            // Обработка ошибок
+            console.error('Error deleting task:', error.message);
+          });
       }
     },
 
@@ -202,18 +198,18 @@ export default {
       event.preventDefault();
     },
     handleDrop(event) {
-    event.preventDefault();
-    const taskId = event.dataTransfer.getData('text/plain');
-    this.$emit('task-dropped', Number(taskId), this.column.id);
-  },
+      event.preventDefault();
+      const taskId = event.dataTransfer.getData('text/plain');
+      this.$emit('task-dropped', Number(taskId), this.column.id);
+    },
 
-  highlightDropArea(event) {
+    highlightDropArea(event) {
       event.target.classList.add('highlighted-drop-area');
     },
     unhighlightDropArea(event) {
       event.target.classList.remove('highlighted-drop-area');
     },
-    
+
 
 
     closeModal() {
@@ -223,11 +219,9 @@ export default {
       this.taskDescription = "";
       this.taskDate = "";
     },
-
   },
 };
 </script>
-
 
 <style scoped>
 /* стили для модального окна */
